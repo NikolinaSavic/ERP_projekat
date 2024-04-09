@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const Customer = require("./customerModel");
-const Employee = require("./employeeModel");
 const OrderItem = require("./orderItemModel");
 
 const orderSchema = mongoose.Schema({
@@ -34,11 +33,6 @@ const orderSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: Customer,
-    },
-    employeeId: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        ref: Employee,
     },
     orderItems: [
         {

@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const Product = require("./productModel");
-const Order = require("./orderModel");
 
 const orderItemSchema = mongoose.Schema({
     price: {

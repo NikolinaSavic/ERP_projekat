@@ -1,4 +1,5 @@
 const mongoose = require("mongoose")
+const Category = require("./categoryModel")
 
 const productSchema = mongoose.Schema({
     productName: {
@@ -28,10 +29,14 @@ const productSchema = mongoose.Schema({
     },
     reviewsNumber: {
         type: Number,
+    },
+    categoryId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: Category,
     }
 });
 
-productSchema.index({productName: "text", description: "text"}, {name: "TextIndex"})  //ovo koristimo jer cemo pretrazivati proizvode po imenu
+productSchema.index({ productName: "text", description: "text" }, { name: "TextIndex" })  //ovo koristimo jer cemo pretrazivati proizvode po imenu
 
 const Product = mongoose.model("Product", productSchema)
 

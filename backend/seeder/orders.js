@@ -9,8 +9,7 @@ const orders = [
     paymentMethod: "PayPal",
     orderDate: "2/13/2024",
     deliveryDate: "4/14/2023",
-    customerId: ObjectId("65f4a410bcb29ebf93affd16"),
-    employeeId: ObjectId("65f4a410bcb29ebf93affd22"),
+    customerId: ObjectId("6615368316656a4c2107100e"),
     orderItems: [],
   }, {
     totalPrice: 53,
@@ -21,7 +20,6 @@ const orders = [
     orderDate: "8/28/2023",
     deliveryDate: "2/5/2024",
     customerId: ObjectId("65f4a410bcb29ebf93affd1b"),
-    employeeId: ObjectId("65f4a410bcb29ebf93affd25"),
     orderItems: [],
   }, {
     totalPrice: 158,
@@ -32,7 +30,6 @@ const orders = [
     orderDate: "5/15/2023",
     deliveryDate: "9/1/2023",
     customerId: ObjectId("65f4a410bcb29ebf93affd18"),
-    employeeId: ObjectId("65f4a410bcb29ebf93affd26"),
     orderItems: [],
   }, {
     totalPrice: 110,
@@ -43,7 +40,6 @@ const orders = [
     orderDate: "8/22/2023",
     deliveryDate: "4/5/2023",
     customerId: ObjectId("65f4a410bcb29ebf93affd17"),
-    employeeId: ObjectId("65f4a410bcb29ebf93affd26"),
     orderItems: [],
   }, {
     totalPrice: 333,
@@ -54,7 +50,6 @@ const orders = [
     orderDate: "8/21/2023",
     deliveryDate: "2/27/2024",
     customerId: ObjectId("65f4a410bcb29ebf93affd16"),
-    employeeId: ObjectId("65f4a410bcb29ebf93affd22"),
     orderItems: [],
   }
 ]

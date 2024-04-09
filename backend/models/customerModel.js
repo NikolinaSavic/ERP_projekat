@@ -24,6 +24,11 @@ const customerSchema = mongoose.Schema({
     },
     phone: {
         type: String,
+    },
+    isAdmin: {
+        type: Boolean,
+        required: true,
+        default: false,
     }
 });
 

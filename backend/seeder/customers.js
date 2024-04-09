@@ -1,11 +1,12 @@
 const customers = [
     {
-        firstName: "Ewan",
-        lastName: "Casin",
+        firstName: "Nikolina",
+        lastName: "Savic",
         email: "ecasin0@amazonaws.com",
         password: "eR3#=M7Z1fAL$uOG",
         address: "636 Old Shore Point",
-        phone: "338-248-2026"
+        phone: "338-248-2026",
+        isAdmin: true,
     }, {
         firstName: "Ellette",
         lastName: "Pardey",
