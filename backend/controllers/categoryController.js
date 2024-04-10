@@ -13,7 +13,7 @@ const getCategoryById = async (req, res, next) => {
     try {
         const category = await Category.findById(req.params.id)
         if (!category) {
-            return res.status(400).send("Category not found")
+            return res.status(404).send("Category not found")
         }
         else {
             return res.status(200).json(category)
@@ -57,7 +57,7 @@ const updateCategory = async (req, res, next) => {
             category.description = description || category.description;
 
             await category.save();
-            return res.status(200).send("Category successsfully updated!")
+            return res.status(200).send("Category successfully updated!")
         }
     } catch (error) {
         next(error);

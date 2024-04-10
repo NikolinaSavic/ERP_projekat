@@ -26,9 +26,11 @@ const productSchema = mongoose.Schema({
     ],*/
     rating: {
         type: Number,
+        default: 0
     },
     reviewsNumber: {
         type: Number,
+        default: 0
     },
     categoryId: {
         type: mongoose.Schema.Types.ObjectId,
