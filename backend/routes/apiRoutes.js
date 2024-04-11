@@ -5,12 +5,14 @@ const categoryRoutes = require("./categoryRoutes")
 const customerRoutes = require("./customerRoutes")
 const orderItemRoutes = require("./orderItemRoutes")
 const orderRoutes = require("./orderRoutes")
+const reviewRoutes = require("./reviewRoutes")
 
 app.use("/products", productRoutes)
 app.use("/categories", categoryRoutes)
 app.use("/customers", customerRoutes)
 app.use("/orderItems", orderItemRoutes)
 app.use("/orders", orderRoutes)
+app.use("/reviews", reviewRoutes)
 
 
 

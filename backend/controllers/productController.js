@@ -24,6 +24,7 @@ const getProductById = async (req, res, next) => {
     }
 }
 
+//moze samo admin
 const createProduct = async (req, res, next) => {
     try {
         const { productName, description, size, price, categoryName } = req.body;
@@ -50,6 +51,7 @@ const createProduct = async (req, res, next) => {
     }
 }
 
+//admin
 const updateProduct = async (req, res, next) => {
     try {
         const product = await Product.findById(req.params.id);
@@ -75,6 +77,7 @@ const updateProduct = async (req, res, next) => {
     }
 }
 
+//admin
 const deleteProduct = async (req, res, next) => {
     try {
         if (req.params.productName !== "Choose product") {
