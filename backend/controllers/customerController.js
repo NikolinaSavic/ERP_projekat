@@ -4,7 +4,7 @@ const generateAuthToken = require("../utils/generateAuthToken")
 
 const getCustomers = async (req, res, next) => {
     try {
-        const customers = await Customer.find({}).select("-password"); //ne zelim da se prikaze lozinka korisnika
+        const customers = await Customer.find({})//.select("-password"); //ne zelim da se prikaze lozinka korisnika
         res.json(customers)
     } catch (error) {
         next(error)
@@ -110,7 +110,71 @@ const loginCustomer = async (req, res, next) => {
     }
 }
 
+const updateCustomerProfile = async (req, res, next) => {
+    try {
+        const customer = await Customer.findById(req.customer._id).orFail(); //ovde mozemo naci id iz req.customer_id jer tamo u middleware mi saljemo customer decoded pa imamo tu vrednost
+        customer.firstName = req.body.firstName || customer.firstName
+        customer.lastName = req.body.lastName || customer.lastName
+        customer.email = req.body.email || customer.email
+        customer.phone = req.body.phone
+        customer.address = req.body.address
+        if (req.body.password !== customer.password) {
+            customer.password = hashPassword(req.body.password);
+        }
+        await customer.save();
+
+        res.json({
+            success: "Customer updated",
+            customerUpdated: {
+                _id: customer._id,
+                firstName: customer.firstName,
+                lastName: customer.lastName,
+                email: customer.email,
+                isAdmin: customer.isAdmin,
+            }
+        })
+    } catch (error) {
+        next(error)
+    }
+}
+
+const getCustomerProfile = async (req, res, next) => {
+    try {
+        const customer = await Customer.findById(req.params.id).orFail();
+        return res.send(customer)
+    } catch (error) {
+        next(error)
+    }
+}
+
+const updateCustomer = async (req, res, next) => {
+    try {
+        const customer = await Customer.findById(req.params.id).orFail();
+        customer.firstName = req.body.firstName || customer.firstName
+        customer.lastName = req.body.lastName || customer.lastName
+        customer.email = req.body.email || customer.email
+        customer.isAdmin = req.body.isAdmin || customer.isAdmin
+
+        await customer.save();
+        return res.status(200).send("Customer successfully updated!")
+    } catch (err) {
+        next(err)
+    }
+}
+
+const deleteCustomer = async (req, res, next) => {
+    try {
+        const customer = await Customer.findById(req.params.id).orFail();
+        if (!customer) {
+            return res.status(400).send("Cutomer not found!");
+        } else {
+            await customer.remove();
+            return res.status(200).send("Customer successfully deleted!")
+        }
+    } catch (err) {
+        next(err)
+    }
+}
 
 
-
-module.exports = { getCustomers, getCustomerById, registerCustomer, loginCustomer }
+module.exports = { getCustomers, getCustomerById, registerCustomer, loginCustomer, updateCustomerProfile, getCustomerProfile, updateCustomer, deleteCustomer }

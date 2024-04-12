@@ -1,5 +1,4 @@
 const Review = require("../models/reviewModel")
-const Customer = require("../models/customerModel")
 const Product = require("../models/productModel")
 
 const getReviews = async (req, res, next) => {
@@ -38,6 +37,7 @@ const createReview = async (req, res, next) => {
             if (alreadyReviewed) {
                 return res.status(400).json({ message: 'Already left a review for this product! The product can be rated only once!' })
             } else {
+                //console.log(req.customer._id)
                 await Review.create([
                     {
                         rating: Number(rating),
@@ -62,7 +62,7 @@ const updateReview = async (req, res, next) => {
         } else {
             const { rating, description } = req.body;
 
-            if (req.customer._id == review.customer._id) {
+            if (req.customer._id == review.customer.id) {
                 review.rating = rating || review.rating;
                 review.description = description || review.description;
 

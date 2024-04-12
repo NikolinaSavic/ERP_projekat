@@ -107,5 +107,16 @@ const getProductsByCategory = async (req, res, next) => {
     }
 }
 
+//admin
+const getProductsByAdmin = async (req, res, next) => {
+    try {
+        const products = await Product.find({});//.sort({ productName: "asc" })
+        return res.status(200).json(products)
+    } catch (err) {
+        next(err);
+    }
+}
 
-module.exports = { getProducts, getProductById, createProduct, updateProduct, deleteProduct, getProductsByCategory }
+
+
+module.exports = { getProducts, getProductById, createProduct, updateProduct, deleteProduct, getProductsByCategory, getProductsByAdmin }
