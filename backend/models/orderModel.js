@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Customer = require("./customerModel");
-const OrderItem = require("./orderItemModel");
+const Product = require("./productModel");
 
 const orderSchema = mongoose.Schema({
     totalPrice: {
@@ -14,10 +14,12 @@ const orderSchema = mongoose.Schema({
     status: {
         type: String,
         required: true,
+        default: "Not delivered"
     },
     isPaid: {
         type: Boolean,
         required: true,
+        default: false,
     },
     paymentMethod: {
         type: String,
@@ -36,8 +38,23 @@ const orderSchema = mongoose.Schema({
     },
     orderItems: [
         {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: OrderItem
+            productId: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: Product,
+                required: true
+            },
+            productName: {
+                type: String,
+                required: true
+            },
+            quantity: {
+                type: Number,
+                required: true
+            },
+            price: {
+                type: Number,
+                required: true
+            }
         }
     ]
 });

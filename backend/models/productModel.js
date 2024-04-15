@@ -35,6 +35,14 @@ const productSchema = mongoose.Schema({
     categoryId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: Category,
+    },
+    /*sales: {
+        type: Number,
+        default: 0
+    },*/
+    quantity: {
+        type: Number,
+        required: true
     }
 });
 

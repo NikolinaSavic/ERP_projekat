@@ -27,8 +27,8 @@ const getProductById = async (req, res, next) => {
 //moze samo admin
 const createProduct = async (req, res, next) => {
     try {
-        const { productName, description, size, price, categoryName } = req.body;
-        if (!productName || !description || !size || !price || !categoryName) {
+        const { productName, description, size, price, categoryName, quantity } = req.body;
+        if (!productName || !description || !size || !price || !categoryName || !quantity) {
             return res.status(400).send("All fields are mandatory!")
         }
 
@@ -42,7 +42,8 @@ const createProduct = async (req, res, next) => {
                 description: description,
                 size: size,
                 price: price,
-                categoryId: category._id
+                categoryId: category._id,
+                quantity: quantity
             })
             return res.status(201).send(createdProduct);
         }
@@ -58,7 +59,7 @@ const updateProduct = async (req, res, next) => {
         if (!product) {
             return res.status(404).send("Product doesn't exist!");
         } else {
-            const { productName, description, size, price, categoryName } = req.body;
+            const { productName, description, size, price, categoryName, quantity } = req.body;
 
             if (categoryName) {
                 var category = await Category.findOne({ categoryName: categoryName }).select('_id');
@@ -68,6 +69,7 @@ const updateProduct = async (req, res, next) => {
             product.description = description || product.description;
             product.size = size || product.size;
             product.price = price || product.price;
+            product.quantity = quantity || product.quantity;
             product.categoryId = category._id || product.categoryId;
             await product.save();
             return res.status(200).send("Product successfully updated!")
