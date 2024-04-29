@@ -19,11 +19,11 @@ const productSchema = mongoose.Schema({
         type: Number,
         required: true,
     },
-    /*images: [
+    images: [
         {
-            url: {type: String, required: true}
+            url: { type: String }
         }
-    ],*/
+    ],
     rating: {
         type: Number,
         default: 0

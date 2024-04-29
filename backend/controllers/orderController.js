@@ -37,11 +37,15 @@ const createOrder = async (req, res, next) => {
             for (let i = 0; i < orderItems.length; i++) {
                 id = orderItems[i].productId
                 const product = await Product.findById(id).select("quantity");
-                console.log(orderItems[i].quantity + "->")
+                //console.log(orderItems[i].quantity + "->")
                 console.log(product.quantity + "-->")
                 if (orderItems[i].quantity > product.quantity) {
                     return res.status(400).send("Number of items is not available now.")
+                } else if (product.quantity - orderItems[i].quantity < 0) {
+                    return res.status(400).send("Product out of stock!")
                 }
+                product.quantity = product.quantity - orderItems[i].quantity
+                await product.save();
             }
 
             const order = await Order.create({

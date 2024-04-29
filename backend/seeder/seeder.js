@@ -12,9 +12,6 @@ const Customer = require("../models/customerModel")
 const orderData = require("./orders")
 const Order = require("../models/orderModel")
 
-const orderItemData = require("./orderItems")
-const OrderItem = require("../models/orderItemModel")
-
 const categoryData = require("./categories")
 const Category = require("../models/categoryModel")
 
@@ -28,22 +25,12 @@ const importData = async () => {
         await Customer.collection.deleteMany({})
         await Review.collection.deleteMany({})
         await Order.collection.deleteMany({})
-        await OrderItem.collection.deleteMany({})
 
         await Category.insertMany(categoryData)
         await Product.insertMany(productData)
         await Customer.insertMany(customerData)
         await Review.insertMany(reviewData)
-
-        //ovo radimo jer hocemo da povezemo order i order item
-        const orderItems = await OrderItem.insertMany(orderItemData)
-        const sampleOrders = orderData.map((order) => {
-            orderItems.map((orderItem) => {
-                order.orderItems.push(orderItem._id)
-            })
-            return { ...order } //vracamo order na koju je dodat order item
-        })
-        await Order.insertMany(sampleOrders)
+        await Order.insertMany(orderData)
 
         console.log("Seeder data proceeded successfylly")
     } catch (error) {
