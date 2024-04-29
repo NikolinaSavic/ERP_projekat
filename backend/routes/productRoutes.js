@@ -1,12 +1,13 @@
 const express = require('express')
 const router = express.Router()
-const { getProducts, getProductById, createProduct, updateProduct, deleteProduct, getProductsByCategory, getProductsByAdmin } = require('../controllers/productController')
+const { getProducts, getProductById, createProduct, updateProduct, deleteProduct, getProductsByCategory, getProductsByAdmin, getProductBySearchBox } = require('../controllers/productController')
 const { verifyIsLoggedIn, verifyIsAdmin } = require("../middleware/verifyAuthToken")
 
 //obican customer
 router.get("/", getProducts)
 router.get("/:id", getProductById)
 router.get("/category/:categoryId", getProductsByCategory)
+router.get("/search/:searchQuery", getProductBySearchBox)
 
 //admin
 router.use(verifyIsLoggedIn)

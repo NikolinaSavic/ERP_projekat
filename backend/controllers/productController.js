@@ -1,9 +1,51 @@
 const Product = require("../models/productModel")
 const Category = require("../models/categoryModel")
+const recordsPerPage = require("../config/pagination")
+const { query } = require("express")
 
 const getProducts = async (req, res, next) => {
     try {
-        const products = await Product.find({}).orFail();
+        const pageNum = Number(req.query.pageNum) || 1
+        const totalProducts = await Product.countDocuments({})
+
+        let sort = {}
+        const sortOption = req.query.sort || ""
+        if (sortOption) {
+            let sortOpt = sortOption.split("_")
+            sort = { [sortOpt[0]]: Number(sortOpt[1]) }
+        }
+
+        const products = await Product.find({})
+            .skip(recordsPerPage * (pageNum - 1))
+            .sort(sort)
+            .limit(recordsPerPage);
+        return res.status(200).json(products)
+
+    } catch (error) {
+        next(error)
+    }
+}
+
+const getProductBySearchBox = async (req, res, next) => {
+    try {
+
+        const searchQuery = req.params.searchQuery || "";
+        let searchQueryCondition = {}
+        let query = {}
+        if (searchQuery) {
+            queryCondition = true
+            searchQueryCondition = { $text: { $search: '"' + searchQuery + '"' } }
+        }
+
+        if (queryCondition) {
+            query = {
+                $and: [
+                    searchQueryCondition
+                ]
+            }
+        }
+
+        const products = await Product.find(query);
         return res.status(200).json(products)
     } catch (error) {
         next(error)
@@ -95,10 +137,15 @@ const deleteProduct = async (req, res, next) => {
 }
 
 const getProductsByCategory = async (req, res, next) => {
-    const categoryId = req.params.categoryId;
+    //const categoryId = req.params.categoryId;
 
     try {
-        const products = await Product.find({ categoryId: categoryId });
+        const pageNum = Number(req.query.pageNum) || 1;
+        const categoryName = req.params.category;
+        const products = await Product.find({})
+            .skip(pageNum > 1 ? ((pageNum - 1) * recordsPerPage) : 0)
+            .limit(recordsPerPage)
+            .populate({ path: "categoryId", select: "categoryName" });
         if (products.length === 0) {
             return res.status(404).send("There are no products for this category!");
         } else {
@@ -121,4 +168,4 @@ const getProductsByAdmin = async (req, res, next) => {
 
 
 
-module.exports = { getProducts, getProductById, createProduct, updateProduct, deleteProduct, getProductsByCategory, getProductsByAdmin }
+module.exports = { getProducts, getProductById, createProduct, updateProduct, deleteProduct, getProductsByCategory, getProductsByAdmin, getProductBySearchBox }
