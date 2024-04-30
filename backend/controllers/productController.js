@@ -1,7 +1,9 @@
 const Product = require("../models/productModel")
 const Category = require("../models/categoryModel")
 const recordsPerPage = require("../config/pagination")
+const imageValidate = require("../utils/imageValidation")
 const { query } = require("express")
+
 
 const getProducts = async (req, res, next) => {
     try {
@@ -166,6 +168,36 @@ const getProductsByAdmin = async (req, res, next) => {
     }
 }
 
+const adminUpload = async (req, res, next) => {
+    try {
+        if (!req.files || !!req.files.images === false) {
+            return res.status(400).send("No files were uploaded.")
+        }
+
+        const validateResult = imageValidate(req.files.images)
+        if (validateResult.error) {
+            return res.status(400).send(validateResult.error)
+        }
+
+        const path = require("path")
+        const { v4: uuidv4 } = require("uuid") //random name za fajlove
+
+        let imagesToUpload = []
+        if (Array.isArray(req.files.images)) {
+            imagesToUpload = req.files.images
+        } else {
+            imagesToUpload.push(req.files.images)
+        }
+
+        for (let image of imagesToUpload) {
+            console.log(path.extname(image.name))
+        }
+
+    } catch (error) {
+        next(error)
+    }
+}
 
 
-module.exports = { getProducts, getProductById, createProduct, updateProduct, deleteProduct, getProductsByCategory, getProductsByAdmin, getProductBySearchBox }
+
+module.exports = { getProducts, getProductById, createProduct, updateProduct, deleteProduct, getProductsByCategory, getProductsByAdmin, getProductBySearchBox, adminUpload }
