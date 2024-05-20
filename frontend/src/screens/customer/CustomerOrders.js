@@ -28,7 +28,7 @@ const CustomerOrders = () => {
                                     <i className={item}></i>
                                 </td>
                                 <td>
-                                    <Link to="/customer/order/details">Go to order</Link>
+                                    <Link to="/customer/order-details">Go to order</Link>
                                 </td>
                             </tr>
                         ))}
