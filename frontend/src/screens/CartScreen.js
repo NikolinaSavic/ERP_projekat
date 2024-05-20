@@ -26,7 +26,7 @@ const CartScreen = () => {
                             Price: <span className="fw-bold">rsd</span>
                         </ListGroup.Item>
                         <ListGroup.Item>
-                            <LinkContainer to="/customer/cart-details">
+                            <LinkContainer to="/customer/my-orders">
                                 <Button type="button">
                                     Proceed to checkout
                                 </Button>

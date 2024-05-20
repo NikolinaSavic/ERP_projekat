@@ -5,8 +5,7 @@ import {
     Container,
     Form,
     Button,
-    CloseButton,
-    Alert
+    CloseButton
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
@@ -89,9 +88,6 @@ const AdminCreateProduct = () => {
                                 name="newCategory"
                                 type="text"
                             />            </Form.Group>
-                        <Alert variant="danger">
-                            nzm
-                        </Alert>
                         <Form.Group controlId="formFileMultiple" className="mb-3 mt-3">
                             <Form.Label>Images</Form.Label>
 
