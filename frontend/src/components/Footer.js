@@ -5,8 +5,8 @@ const Footer = () => {
 
     return (
         <footer>
-            <Container>
-                <Row>
+            <Container fluid>
+                <Row className="mt-5">
                     <Col className="text-center py-3">
                         <p>SportsStore &copy; {currentYear}</p>
                     </Col>

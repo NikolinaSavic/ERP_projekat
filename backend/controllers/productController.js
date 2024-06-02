@@ -13,7 +13,7 @@ const getProducts = async (req, res, next) => {
         let sort = {}
         const sortOption = req.query.sort || ""
         if (sortOption) {
-            let sortOpt = sortOption.split("_")
+            let sortOpt = sortOption.split(" ")
             sort = { [sortOpt[0]]: Number(sortOpt[1]) }
         }
 

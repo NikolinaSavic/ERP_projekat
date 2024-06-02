@@ -7,7 +7,7 @@ const products = [
     size: "one size",
     price: 20,
     images: [
-      { path: "/glowes.jpg" }
+      { path: "images/glowes.jpg" }
     ],
     rating: 4,
     reviewsNumber: 1,
@@ -19,7 +19,7 @@ const products = [
     size: "one size",
     price: 120,
     images: [
-      { path: "/bag.jpg" }
+      { path: "images/bag.jpg" }
     ],
     rating: 2,
     reviewsNumber: 1,
@@ -31,7 +31,7 @@ const products = [
     size: "one size",
     price: 30,
     images: [
-      { path: "/bands.jpg" }
+      { path: "images/bands.jpg" }
     ],
     rating: 5,
     reviewsNumber: 36,
@@ -43,7 +43,7 @@ const products = [
     size: "one size",
     price: 45,
     images: [
-      { path: "/straps.jpg" }
+      { path: "images/straps.jpg" }
     ],
     rating: 5,
     reviewsNumber: 2,
@@ -55,7 +55,7 @@ const products = [
     size: "one size",
     price: 20,
     images: [
-      { path: "/bottle.jpg" }
+      { path: "images/bottle.jpg" }
     ],
     rating: 3,
     reviewsNumber: 1,

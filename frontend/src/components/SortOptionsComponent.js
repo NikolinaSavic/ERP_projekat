@@ -6,7 +6,6 @@ const SortOptionsComponent = ({ setSortOption }) => {
             <option>Sort by</option>
             <option value="price 1">Price: Low to high</option>
             <option value="price -1">Price: High to low</option>
-            <option value="rating -1">Rating</option>
             <option value="productName 1">Name A-Z</option>
             <option value="productName -1">Name Z-A</option>
         </Form.Select>
