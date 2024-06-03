@@ -7,12 +7,14 @@ import { categoryListReducer } from './reducers/categoryReducers'
 import {
     productDetailsReducer,
     productListReducer,
+    productListBySearchQueryReducer
 } from './reducers/productReducers'
 
 
 const reducer = combineReducers({
     categories: categoryListReducer,
     productList: productListReducer,
+    productListBySearchQueryReducer: productListBySearchQueryReducer,
     product: productDetailsReducer,
     cart: counterReducer,
 })

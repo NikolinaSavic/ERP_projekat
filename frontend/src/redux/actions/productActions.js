@@ -28,6 +28,8 @@ export const listProducts = (price, pageNum, sortOption, searchQuery) => async (
     try {
         dispatch({ type: PRODUCT_LIST_REQUEST });
 
+        console.log("List Products Params - PageNum:", pageNum, "SortOption:", sortOption, "SearchQuery:", searchQuery);
+
         let categories = "";
         const { data } = await axios.get(
             `/api/products/?price=${price}&pageNum=${pageNum}&categories=${categories}&sort=${sortOption}&searchQuery=${searchQuery}`
@@ -46,6 +48,28 @@ export const listProducts = (price, pageNum, sortOption, searchQuery) => async (
         });
     }
 };
+
+export const listProductsBySearchQuery = (searchQuery) => async (
+    dispatch
+) => {
+    try {
+        dispatch({ type: PRODUCT_LIST_REQUEST });
+
+        const { data } = await axios.get(`/api/products/search/${searchQuery}`);
+        dispatch({
+            type: PRODUCT_LIST_SUCCESS,
+            payload: data,
+        });
+    } catch (error) {
+        dispatch({
+            type: PRODUCT_LIST_FAIL,
+            payload: error.response && error.response.data.message
+                ? error.response.data.message
+                : error.message,
+        });
+    }
+};
+
 
 
 export const getProductDetails = (id) => async (dispatch) => {

@@ -30,7 +30,6 @@ const getProducts = async (req, res, next) => {
 
 const getProductBySearchBox = async (req, res, next) => {
     try {
-
         const searchQuery = req.params.searchQuery || "";
         let searchQueryCondition = {}
         let query = {}

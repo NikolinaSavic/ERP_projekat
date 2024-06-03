@@ -1,9 +1,23 @@
 import { Navbar, Nav, Container, NavDropdown, Badge, Form, Button, InputGroup } from 'react-bootstrap';
 import { LinkContainer } from "react-router-bootstrap";
 import logo from '../assets/logo.png'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useState } from "react";
 
 const Header = () => {
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
+
+  const submitHandler = (e) => {
+    if (e.keyCode && e.keyCode !== 13) return;
+    e.preventDefault();
+    console.log("Search Query on Submit:", searchQuery);
+    if (searchQuery.trim()) {
+      window.location.assign(`/product-list/search/${searchQuery}`);
+    }
+  }
+
   return (
     <header>
       <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
@@ -19,8 +33,12 @@ const Header = () => {
             <Nav className="me-auto">
 
               <InputGroup>
-                <Form.Control type="text" placeholder='Search for products' />
-                <Button variant="warning">
+                <Form.Control style={{ width: 300, padding: 5 }}
+                  onKeyUp={submitHandler}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  type="text"
+                  placeholder="Search for product..." />
+                <Button onClick={submitHandler} variant="warning">
                   <i className="bi bi-search text-dark"></i>
                 </Button>
               </InputGroup>

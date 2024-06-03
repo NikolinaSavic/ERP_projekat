@@ -1,7 +1,7 @@
 import { Container, Row, Col, ListGroup, Card, Button } from "react-bootstrap";
 import { LinkContainer } from 'react-router-bootstrap';
 import SortOptionsComponent from "../components/SortOptionsComponent";
-import { listProducts } from '../redux/actions/productActions';
+import { listProducts, listProductsBySearchQuery } from '../redux/actions/productActions';
 import { useParams } from "react-router-dom";
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,23 +9,34 @@ import { Rating } from "react-simple-star-rating";
 import Pagination from 'react-js-pagination';
 
 const ProductListScreen = () => {
+
+    const { searchQuery } = useParams();
     const [pageNum, setCurrentPage] = useState(1);
     const [price, setPrice] = useState(5000);
-    const { searchQuery } = useParams();
-    const [query, setQuery] = useState(searchQuery ? searchQuery : "");
     const [sortOption, setSortOption] = useState("");
     const dispatch = useDispatch();
     const productList = useSelector((state) => state.productList);
     const { loading, error, products, totalProducts } = productList;
 
     useEffect(() => {
-        dispatch(listProducts(price, pageNum, sortOption, query));
+        if (searchQuery) {
+            dispatch(listProductsBySearchQuery(searchQuery));
+        } else {
+            dispatch(listProducts(price, pageNum, sortOption));
+        }
     }, [dispatch, price, pageNum, sortOption, searchQuery]);
 
-    function setCurrentPageNum(pageNum) {
+    useEffect(() => {
+        // Resetujemo pageNum na 1 i ostale parametre na početne vrednosti kada se promeni searchQuery
+        setCurrentPage(1);
+        setPrice(5000); // Postavljamo početnu vrednost cene na 5000 (ili neku drugu početnu vrednost)
+        setSortOption(""); // Resetujemo sort opciju
+    }, [searchQuery]);
+
+    const setCurrentPageNum = (pageNum) => {
         setCurrentPage(pageNum);
         console.log(pageNum);
-    }
+    };
 
     return (
         <>
@@ -78,7 +89,7 @@ const ProductListScreen = () => {
                                 )}
                                 <Pagination
                                     activePage={pageNum}
-                                    itemsCountPerPage={3}
+                                    itemsCountPerPage={2}
                                     totalItemsCount={totalProducts}
                                     onChange={setCurrentPageNum}
                                     itemClass="page-item"
