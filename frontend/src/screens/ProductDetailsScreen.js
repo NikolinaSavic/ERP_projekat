@@ -65,7 +65,7 @@ const ProductDetailsScreen = () => {
                 ) : (
                     <>
                         <Col md={4}>
-                            <Image fluid src={'/images/' + product.productName + '.jpg'}
+                            <Image fluid src={'/images/' + product.productName.replace(/\s+/g, '').toLowerCase() + '.jpg'}
                                 style={{ width: '250px', height: '220px' }} />
                         </Col>
                         <Col md={8}>
@@ -79,7 +79,7 @@ const ProductDetailsScreen = () => {
                                             <Rating readonly size={20} initialValue={product.rating} /> ({product.reviewsNumber})
                                         </ListGroup.Item>
                                         <ListGroup.Item>
-                                            <span className="fw-bold">Price {product.price} </span>
+                                            <span className="fw-bold">Price {product.price}$ </span>
                                         </ListGroup.Item>
                                         <ListGroup.Item>
                                             {product.description}

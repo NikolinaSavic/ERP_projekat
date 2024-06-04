@@ -1,6 +1,8 @@
 const jwt = require("jsonwebtoken")
 
 const verifyIsLoggedIn = (req, res, next) => {
+    next()
+    return //to do: remove later
     try {
         const token = req.cookies.access_token; //citamo token iz cookia
         if (!token) {
@@ -20,6 +22,8 @@ const verifyIsLoggedIn = (req, res, next) => {
 }
 
 const verifyIsAdmin = (req, res, next) => {
+    next()
+    return //to do: remove later
     if (req.customer && req.customer.isAdmin) {
         next()
     } else {

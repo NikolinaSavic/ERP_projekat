@@ -3,11 +3,21 @@ import { LinkContainer } from "react-router-bootstrap";
 import logo from '../assets/logo.png'
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from '../redux/actions/customerActions';
 
 const Header = () => {
 
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
+
+  const userLogin = useSelector((state) => state.userLogin)
+  const { userInfo } = userLogin
+
+  const dispatch = useDispatch()
+  const logoutHandler = () => {
+    dispatch(logout())
+  }
 
   const submitHandler = (e) => {
     if (e.keyCode && e.keyCode !== 13) return;
@@ -50,7 +60,9 @@ const Header = () => {
               <NavDropdown title="Customer" id="collapsible-nav-dropdown">
                 <NavDropdown.Item as={Link} to="/customer/my-orders">My orders</NavDropdown.Item>
                 <NavDropdown.Item as={Link} to="/customer">My profile</NavDropdown.Item>
-                <NavDropdown.Item>Logout</NavDropdown.Item>
+                <NavDropdown.Item onClick={() => logoutHandler()}>
+                  Logout
+                </NavDropdown.Item>
               </NavDropdown>
               <LinkContainer to="/login">
                 <Nav.Link>Login</Nav.Link>

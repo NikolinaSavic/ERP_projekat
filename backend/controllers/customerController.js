@@ -74,7 +74,7 @@ const loginCustomer = async (req, res, next) => {
             return res.status(400).send("All fields are required")
         }
 
-        const customer = await Customer.findOne({ email })
+        const customer = await Customer.findOne({ email }).orFail();
         //proveravamo jednakost unete lozinke sa onom hesovanom iz baze p
         if (customer && comparePasswords(password, customer.password)) {
             let cookieParams = {

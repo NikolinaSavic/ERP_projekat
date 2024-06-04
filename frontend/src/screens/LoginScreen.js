@@ -1,13 +1,40 @@
 import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import Spinner from 'react-bootstrap/Spinner'
+import { useState } from "react";
+import { useDispatch, useSelector } from 'react-redux'
+import { login } from '../redux/actions/customerActions'
+import React, { useEffect } from 'react'
 
 const LoginScreen = () => {
+
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+
+
+    const dispatch = useDispatch()
+    const userLogin = useSelector((state) => state.userLogin)
+    const { loading, error, userInfo } = userLogin
+
+    useEffect(() => {
+        if (userInfo) {
+            window.location.assign('/')
+        }
+
+    }, [userInfo])
+
+
+    const submitHandler = (e) => {
+        e.preventDefault()
+        dispatch(login(email, password))
+    }
+
     return (
         <Container>
             <Row className="mt-5 justify-content-md-center">
                 <Col md={6}>
                     <h1>Login</h1>
-                    <Form noValidate>
+                    <Form noValidate onSubmit={submitHandler}>
                         <Form.Group className="mb-3" controlId="formBasicEmail">
                             <Form.Label>E-mail</Form.Label>
                             <Form.Control
@@ -15,7 +42,8 @@ const LoginScreen = () => {
                                 required
                                 type="email"
                                 placeholder="Enter email"
-
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
                             />
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -25,7 +53,8 @@ const LoginScreen = () => {
                                 required
                                 type="password"
                                 placeholder="Enter password"
-                                onChange={onchange}
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
                             />
                         </Form.Group>
                         <Row className="pb-2">
@@ -36,10 +65,26 @@ const LoginScreen = () => {
                         </Row>
 
                         <Button variant="primary" type="submit">
+                            {userInfo &&
+                                userInfo.loading === true ? (<Spinner
+                                    as="span"
+                                    animation="border"
+                                    size="sm"
+                                    role="status"
+                                    aria-hidden="true"
+                                />
+                            ) : (
+                                ""
+                            )}
                             Login
                         </Button>
-                        <Alert>
-                            Wrong credentials
+                        <Alert
+                            show={
+                                error != null
+                            }
+                            variant="danger"
+                        >
+                            {error}
                         </Alert>
                     </Form>
                 </Col>
