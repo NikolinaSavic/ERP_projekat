@@ -2,29 +2,58 @@ import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Spinner from 'react-bootstrap/Spinner';
+import { useDispatch, useSelector } from 'react-redux';
+import { register } from '../redux/actions/customerActions';
 
 const RegisterScreen = () => {
     const [validated, setValidated] = useState(false);
 
-    const handleSubmit = (event) => {
-        const form = event.currentTarget;
-        if (form.checkValidity() === false) {
-            event.preventDefault();
-            event.stopPropagation();
-        }
+    const userRegister = useSelector((state) => state.userRegister)
+    const { success, loading, error, userInfo } = userRegister
+    const dispatch = useDispatch()
 
-        setValidated(true);
-    };
+    const [passwordsMatchState, setPasswordsMatchState] = useState(true);
+
+    useEffect(() => {
+        if (userInfo) {
+            window.location.assign('/')
+        }
+    }, [userInfo])
+
 
     const onChange = () => {
         const password = document.querySelector("input[name=password]")
         const confirm = document.querySelector("input[name=confirmPassword]")
         if (confirm.value === password.value) {
-            confirm.setCustomValidity("")
+            setPasswordsMatchState(true);
         } else {
-            confirm.setCustomValidity("Passwords do not match")
+            setPasswordsMatchState(false);
         }
     }
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        const form = event.currentTarget.elements;
+        const email = form.email.value;
+        const firstName = form.name.value;
+        const lastName = form.lastName.value;
+        const password = form.password.value;
+        const phone = form.phoneNumber.value;
+        const address = form.address.value;
+        if (
+            event.currentTarget.checkValidity() === true &&
+            email &&
+            password &&
+            firstName &&
+            lastName &&
+            form.password.value === form.confirmPassword.value
+        ) {
+            dispatch(register(firstName, lastName, email, password, phone, address))
+        }
+        setValidated(true);
+    };
+
 
     return (
         <Container>
@@ -97,6 +126,7 @@ const RegisterScreen = () => {
                                 type="password"
                                 placeholder="Enter your password"
                                 onChange={onChange}
+                                isInvalid={!passwordsMatchState}
                             />
                             <Form.Control.Feedback type="invalid">
                                 PLease enter a valid password
@@ -110,6 +140,7 @@ const RegisterScreen = () => {
                                 type="password"
                                 placeholder="Enter your password again"
                                 onChange={onChange}
+                                isInvalid={!passwordsMatchState}
                             />
                             <Form.Control.Feedback type="invalid">
                                 Both password should match
@@ -124,19 +155,23 @@ const RegisterScreen = () => {
                         </Row>
 
                         <Button type="submit">
-                            <Spinner
-                                as="span"
-                                animation="border"
-                                size="sm"
-                                role="status"
-                                aria-hidden="true"
-                            />
+                            {loading === true ? (
+                                <Spinner
+                                    as="span"
+                                    animation="border"
+                                    size="sm"
+                                    role="status"
+                                    aria-hidden="true"
+                                />
+                            ) : (
+                                ""
+                            )}
                             Submit
                         </Button>
-                        <Alert variant="danger">
-                            User with that email already exists!
+                        <Alert variant="danger" show={error != null}>
+                            {error}
                         </Alert>
-                        <Alert variant="info">
+                        <Alert show={success === true} variant="info">
                             Profile successfully created!
                         </Alert>
                     </Form>

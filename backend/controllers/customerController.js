@@ -42,7 +42,8 @@ const registerCustomer = async (req, res, next) => {
                 email: email.toLowerCase(),
                 password: hashedPassword,
                 phone: phone,
-                address: address
+                address: address,
+                isAdmin: false
             })
             //ovo sad radimo da bismo sakrili passw novokreiranog korisnika
             //res.status(201).send(customer)

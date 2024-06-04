@@ -14,6 +14,7 @@ const Header = () => {
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
+
   const dispatch = useDispatch()
   const logoutHandler = () => {
     dispatch(logout())
@@ -54,27 +55,62 @@ const Header = () => {
               </InputGroup>
             </Nav>
             <Nav>
-              <LinkContainer to="/admin/orders">
-                <Nav.Link>Admin</Nav.Link>
-              </LinkContainer>
-              <NavDropdown title="Customer" id="collapsible-nav-dropdown">
-                <NavDropdown.Item as={Link} to="/customer/my-orders">My orders</NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/customer">My profile</NavDropdown.Item>
-                <NavDropdown.Item onClick={() => logoutHandler()}>
-                  Logout
-                </NavDropdown.Item>
-              </NavDropdown>
-              <LinkContainer to="/login">
-                <Nav.Link>Login</Nav.Link>
-              </LinkContainer>
-              <LinkContainer to="/register">
-                <Nav.Link>Register</Nav.Link>
-              </LinkContainer>
+              {userInfo == null ?
+                (<><LinkContainer to="/login">
+                  <Nav.Link>Login</Nav.Link>
+                </LinkContainer>
+                  <LinkContainer to="/register">
+                    <Nav.Link>Register</Nav.Link>
+                  </LinkContainer></>) : userInfo.customerLoggedIn.isAdmin ? (
+                    <NavDropdown
+                      title={`${userInfo.customerLoggedIn.firstName} ${userInfo.customerLoggedIn.lastName}`}
+                      id="collasible-nav-dropdown"
+                    >
+                      <NavDropdown.Item
+                        eventKey="/admin/orders"
+                        as={Link}
+                        to="/admin/orders"
+                      >
+                        Admin dashboard
+                      </NavDropdown.Item>
+                      <NavDropdown.Item eventKey="/customer" as={Link} to="/customer">
+                        My profile
+                      </NavDropdown.Item>
+                      <NavDropdown.Item onClick={() => logoutHandler()}>
+                        Logout
+                      </NavDropdown.Item>
+                    </NavDropdown>
+                  ) : userInfo != null ? (
+                    <>
+                      <NavDropdown
+                        title={`${userInfo.customerLoggedIn.firstName} ${userInfo.customerLoggedIn.lastName}`}
+                        id="collasible-nav-dropdown"
+                      >
+                        <NavDropdown.Item
+                          eventKey="/customer/my-orders"
+                          as={Link}
+                          to="/customer/my-orders"
+                        >
+                          My orders
+                        </NavDropdown.Item>
+                        <NavDropdown.Item eventKey="/customer" as={Link} to="/customer">
+                          My profile
+                        </NavDropdown.Item>
+                        <NavDropdown.Item onClick={() => logoutHandler()}>
+                          Logout
+                        </NavDropdown.Item>
+                      </NavDropdown>
+
+
+                    </>
+                  ) : (<></>)}
               <LinkContainer to="/cart">
                 <Nav.Link>
-                  <Badge pill bg="warning">
-                    2
-                  </Badge> <i className="bi bi-cart-dash"></i>Cart
+                  <Badge pill bg="danger">
+
+                  </Badge>
+                  <i className="bi bi-cart-dash"></i>
+                  <span className="ms-1">Cart</span>
                 </Nav.Link>
               </LinkContainer>
             </Nav>
