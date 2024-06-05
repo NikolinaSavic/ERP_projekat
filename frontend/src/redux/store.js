@@ -9,7 +9,7 @@ import {
     productListBySearchQueryReducer
 } from './reducers/productReducers'
 import { cartReducer } from './reducers/cartReducers'
-import { userLoginReducer, userRegisterReducer } from "./reducers/customerReducers";
+import { userLoginReducer, userRegisterReducer, userListReducer, userDetailsForAdminReducer, userUpdateByAdminReducer } from "./reducers/customerReducers";
 
 
 const reducer = combineReducers({
@@ -20,6 +20,10 @@ const reducer = combineReducers({
     cart: cartReducer,
     userLogin: userLoginReducer,
     userRegister: userRegisterReducer,
+    users: userListReducer,
+    userUpdate: userUpdateByAdminReducer,
+    userDetailsForAdmin: userDetailsForAdminReducer,
+
 })
 
 

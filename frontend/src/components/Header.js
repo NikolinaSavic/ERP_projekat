@@ -61,9 +61,9 @@ const Header = () => {
                 </LinkContainer>
                   <LinkContainer to="/register">
                     <Nav.Link>Register</Nav.Link>
-                  </LinkContainer></>) : userInfo.customerLoggedIn.isAdmin ? (
+                  </LinkContainer></>) : userInfo.customer.isAdmin ? (
                     <NavDropdown
-                      title={`${userInfo.customerLoggedIn.firstName} ${userInfo.customerLoggedIn.lastName}`}
+                      title={`${userInfo.customer.firstName} ${userInfo.customer.lastName}`}
                       id="collasible-nav-dropdown"
                     >
                       <NavDropdown.Item
@@ -83,7 +83,7 @@ const Header = () => {
                   ) : userInfo != null ? (
                     <>
                       <NavDropdown
-                        title={`${userInfo.customerLoggedIn.firstName} ${userInfo.customerLoggedIn.lastName}`}
+                        title={`${userInfo.customer.firstName} ${userInfo.customer.lastName}`}
                         id="collasible-nav-dropdown"
                       >
                         <NavDropdown.Item

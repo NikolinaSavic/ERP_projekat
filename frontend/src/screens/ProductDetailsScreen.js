@@ -65,7 +65,7 @@ const ProductDetailsScreen = () => {
                 ) : (
                     <>
                         <Col md={4}>
-                            <Image fluid src={'/images/' + product.productName.replace(/\s+/g, '').toLowerCase() + '.jpg'}
+                            <Image variant="top" src={'/images/' + String(product.productName).replace(/\s+/g, '').toLowerCase() + '.jpg'}
                                 style={{ width: '250px', height: '220px' }} />
                         </Col>
                         <Col md={8}>

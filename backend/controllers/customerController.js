@@ -54,7 +54,7 @@ const registerCustomer = async (req, res, next) => {
                     sameSite: "strict"
                 }) //koristimo kako bi korisnik nakon registracije automatski bio logovan na app
                 .status(201).json({
-                    success: "Customer created", customerCreated: {
+                    success: "Customer created", customer: {
                         _id: customer._id,
                         firstName: customer.firstName, lastName: customer.lastName, email: customer.email,
                         phone: customer.phone, address: customer.address, isAdmin: customer.isAdmin
@@ -101,7 +101,7 @@ const loginCustomer = async (req, res, next) => {
                 cookieParams
             ).json({
                 success: "Customer is logged in",
-                customerLoggedIn: { _id: customer._id, firstName: customer.firstName, lastName: customer.lastName, email: customer.email, isAdmin: customer.isAdmin, doNotLogout }
+                customer: { _id: customer._id, firstName: customer.firstName, lastName: customer.lastName, email: customer.email, isAdmin: customer.isAdmin, doNotLogout }
             })
         } else {
             return res.status(401).send("Wrong credentials")
