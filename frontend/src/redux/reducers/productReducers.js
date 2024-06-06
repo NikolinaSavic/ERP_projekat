@@ -25,6 +25,7 @@ import {
     PRODUCT_UPDATE_RESET,
 } from '../constants/productConstants'
 
+
 export const productListReducer = (state = { products: [] }, action) => {
     switch (action.type) {
         case PRODUCT_LIST_REQUEST:
@@ -43,6 +44,7 @@ export const productListReducer = (state = { products: [] }, action) => {
             return state
     }
 }
+
 
 export const productListBySearchQueryReducer = (state = { products: [] }, action) => {
     switch (action.type) {
@@ -79,6 +81,7 @@ export const productDetailsReducer = (
     }
 }
 
+
 export const productListForAdminReducer = (state = { products: [] }, action) => {
     switch (action.type) {
         case PRODUCT_LIST_FOR_ADMIN_REQUEST:
@@ -94,6 +97,8 @@ export const productListForAdminReducer = (state = { products: [] }, action) => 
             return state
     }
 }
+
+
 export const productDeleteReducer = (state = {}, action) => {
     switch (action.type) {
         case PRODUCT_DELETE_REQUEST:
@@ -106,6 +111,7 @@ export const productDeleteReducer = (state = {}, action) => {
             return state
     }
 }
+
 
 export const productCreateReducer = (state = {}, action) => {
     switch (action.type) {
@@ -121,6 +127,8 @@ export const productCreateReducer = (state = {}, action) => {
             return state
     }
 }
+
+
 export const productUpdateReducer = (state = { product: {} }, action) => {
     switch (action.type) {
         case PRODUCT_UPDATE_REQUEST:

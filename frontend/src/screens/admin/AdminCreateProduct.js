@@ -5,22 +5,65 @@ import {
     Container,
     Form,
     Button,
-    CloseButton
+    CloseButton,
+    Alert
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux'
+import React, { useEffect } from 'react'
+import { createProduct } from "../../redux/actions/productActions";
+import { deleteCategory, getCategories } from "../../redux/actions/categoryActions";
+import { PRODUCT_CREATE_RESET } from "../../redux/constants/productConstants";
+import { useNavigate } from "react-router-dom";
 
 
 const AdminCreateProduct = () => {
     const [validated, setValidated] = useState(false);
-    const handleSubmit = (event) => {
+    const { error } = useSelector(state => state.productCreate);
+    const { categories } = useSelector((state) => state.categories);
+    const { error: errorCreate, success } = useSelector((state) => state.categoryCreate);
+    const { success: successDelete } = useSelector((state) => state.categoryDelete);
 
-        const form = event.currentTarget;
-        if (form.chechValidity === false) {
-            event.preventDefault();
-            event.setPropagation();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        dispatch({ type: PRODUCT_CREATE_RESET })
+        dispatch(getCategories())
+    }, [dispatch, success, successDelete])
+
+
+    const ObjectId = (m = Math, d = Date, h = 16, s = s => m.floor(s).toString(h)) =>
+        s(d.now() / 1000) + ' '.repeat(h).replace(/./g, () => s(m.random() * h));
+
+
+    const submitHandler = (e) => {
+        e.preventDefault()
+        const form = e.currentTarget.elements;
+        const productName = form.name.value;
+        const description = form.description.value;
+        const quantity = form.quantity.value;
+        const price = form.price.value;
+        const size = form.size.value;
+        const categoryName = form.category.value;
+        const id = ObjectId();
+        if (e.currentTarget.checkValidity() === true) {
+            dispatch(createProduct(id, productName, description, size, price, categoryName, quantity))
+            if (!error) {
+                console.log(id)
+                setTimeout(function () {
+                    navigate("/admin/products");
+                }, 300)
+
+            }
+            setValidated(true);
         }
+    };
 
-        setValidated(true);
+    const deleteCategoryHandler = (e) => {
+        let element = document.getElementById("cats");
+        dispatch(deleteCategory(element.value));
+        element.value = ""
     };
 
     return (
@@ -33,7 +76,7 @@ const AdminCreateProduct = () => {
                 </Col>
                 <Col md={8}>
                     <h1>Create a new product</h1>
-                    <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                    <Form noValidate validated={validated} onSubmit={submitHandler}>
                         <Form.Group className="mb-3" controlId="formBasicName">
                             <Form.Label>Product name</Form.Label>
                             <Form.Control name="name" required type="text" />
@@ -51,52 +94,52 @@ const AdminCreateProduct = () => {
                                 rows={3}
                             />
                         </Form.Group>
-                        <Form.Group className="mb-3" controlId="formBasicCount">
-                            <Form.Label>Count in stock</Form.Label>
-                            <Form.Control name="count" required type="number" />
+                        <Form.Group className="mb-3" controlId="formBasicSize">
+                            <Form.Label>Size</Form.Label>
+                            <Form.Control name="size" required type="text" />
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="formBasicPrice">
                             <Form.Label>Price</Form.Label>
                             <Form.Control name="price" required type="text" />
                         </Form.Group>
-                        <Form.Group className="mb-3" controlId="formBasicPrice">
-                            <Form.Label>Size</Form.Label>
-                            <Form.Control name="price" required type="text" />
-                        </Form.Group>
                         <Form.Group className="mb-3" controlId="formBasicCategory">
                             <Form.Label>
                                 Category
-                                <CloseButton /> (<small>remove selected</small>)
+                                <CloseButton onClick={deleteCategoryHandler} />(
+                                <small>Delete selected category</small>)
                             </Form.Label>
                             <Form.Select
                                 id="cats"
-                                required
                                 name="category"
                                 aria-label="Default select example"
                             >
                                 <option value="">Choose category</option>
-                                <option value="1">Outlet</option>
-                                <option value="2">Train at home</option>
+                                {categories.map((category, idx) => (
+                                    <option key={idx} value={category.categoryName}>
+                                        {category.categoryName}
+                                    </option>
+                                ))}
                             </Form.Select>
                         </Form.Group>
 
-                        <Form.Group className="mb-3" controlId="formBasicNewCategory">
-                            <Form.Label>
-                                Create new category{" "}
-                            </Form.Label>
-                            <Form.Control
-                                name="newCategory"
-                                type="text"
-                            />            </Form.Group>
+                        <Form.Group className="mb-3" controlId="formBasicQuantity">
+                            <Form.Label>Count in stock</Form.Label>
+                            <Form.Control name="quantity" required type="number" />
+                        </Form.Group>
+
+                        <Alert show={errorCreate != null} variant="danger">
+                            {errorCreate}
+                        </Alert>
+
                         <Form.Group controlId="formFileMultiple" className="mb-3 mt-3">
                             <Form.Label>Images</Form.Label>
-
                             <Form.Control
-                                required
+
                                 type="file"
                                 multiple
                             />
                         </Form.Group>
+
                         <Button variant="primary" type="submit">
                             Create
                         </Button>

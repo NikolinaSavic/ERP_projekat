@@ -126,7 +126,7 @@ const updateCustomerProfile = async (req, res, next) => {
 
         res.json({
             success: "Customer updated",
-            customerUpdated: {
+            customer: {
                 _id: customer._id,
                 firstName: customer.firstName,
                 lastName: customer.lastName,

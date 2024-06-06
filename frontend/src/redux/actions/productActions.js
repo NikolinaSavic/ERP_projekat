@@ -20,7 +20,7 @@ import {
     PRODUCT_UPDATE_FAIL,
 } from '../constants/productConstants'
 
-//import { logout } from './userActions'
+import { logout } from './customerActions'
 
 export const listProducts = (price, pageNum, sortOption, searchQuery) => async (
     dispatch
@@ -96,14 +96,14 @@ export const getProductDetails = (id) => async (dispatch) => {
 export const getProductsListForAdmin = () => async (
     dispatch, getState
 ) => {
-    /*try {
+    try {
 
         const {
             userLogin: { userInfo },
         } = getState()
         let token;
         if (userInfo) {
-            token = userInfo.korisnik.token
+            token = userInfo.customer.token
         }
         else { token = "" }
         const config = {
@@ -113,7 +113,7 @@ export const getProductsListForAdmin = () => async (
         }
         dispatch({ type: PRODUCT_LIST_FOR_ADMIN_REQUEST })
         const { data } = await axios.get(
-            `/api/products/admin`,
+            `/api/products/admin/pr`,
             config
         )
 
@@ -127,7 +127,7 @@ export const getProductsListForAdmin = () => async (
             error.response && error.response.data.message
                 ? error.response.data.message
                 : error.message
-        if (message === "Samo korisnik sa ulogom admina moze pristupiti ovom resursu" || message == "Morate biti ulogovani da bi ste pristupili ovom resursu!" || "Neispravan token! Pokusajte ponovo!") {
+        if (message === "Only admin can access" || message === "Log in to see resource" || "Invalid token! try again!") {
             setTimeout(function () {
                 dispatch(logout())
             }, 1500)
@@ -137,11 +137,11 @@ export const getProductsListForAdmin = () => async (
             type: PRODUCT_LIST_FOR_ADMIN_FAIL,
             payload: message,
         })
-    }*/
+    }
 }
 
-export const deleteProduct = (id) => async (dispatch, getState) => {
-    /*try {
+export const deleteProduct = (productName) => async (dispatch, getState) => {
+    try {
         dispatch({
             type: PRODUCT_DELETE_REQUEST,
         })
@@ -150,7 +150,7 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
         } = getState()
         let token;
         if (userInfo) {
-            token = userInfo.korisnik.token
+            token = userInfo.customer.token
         }
         else { token = "" }
         const config = {
@@ -159,7 +159,7 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
             },
         }
 
-        await axios.delete(`/api/products/admin/${id}`, config)
+        await axios.delete(`/api/products/admin/${productName}`, config)
 
         dispatch({ type: PRODUCT_DELETE_SUCCESS })
     } catch (error) {
@@ -167,7 +167,7 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
             error.response && error.response.data.message
                 ? error.response.data.message
                 : error.message
-        if (message === "Samo korisnik sa ulogom admina moze pristupiti ovom resursu" || message == "Morate biti ulogovani da bi ste pristupili ovom resursu!" || "Neispravan token! Pokusajte ponovo!") {
+        if (message === "Only admin can access" || message === "Log in to see resource" || "Invalid token! try again!") {
             setTimeout(function () {
                 dispatch(logout())
             }, 1500)
@@ -176,11 +176,11 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
             type: PRODUCT_DELETE_FAIL,
             payload: message,
         })
-    }*/
+    }
 }
 
-export const createProduct = (id, naziv_proizvoda, opis_proizvoda, naziv_kategorije, kolicina, cena, prosecna_ocena = 0) => async (dispatch, getState) => {
-    /*try {
+export const createProduct = (id, productName, description, size, price, categoryName, quantity) => async (dispatch, getState) => {
+    try {
         dispatch({
             type: PRODUCT_CREATE_REQUEST,
         })
@@ -190,7 +190,7 @@ export const createProduct = (id, naziv_proizvoda, opis_proizvoda, naziv_kategor
         } = getState()
         let token;
         if (userInfo) {
-            token = userInfo.korisnik.token
+            token = userInfo.customer.token
         }
         else { token = "" }
         const config = {
@@ -199,7 +199,7 @@ export const createProduct = (id, naziv_proizvoda, opis_proizvoda, naziv_kategor
             },
         }
 
-        const { data } = await axios.post(`/api/products/admin`, { id, naziv_proizvoda, opis_proizvoda, naziv_kategorije, kolicina, cena, prosecna_ocena }, config)
+        const { data } = await axios.post(`/api/products/admin`, { id, productName, description, size, price, categoryName, quantity }, config)
 
         dispatch({
             type: PRODUCT_CREATE_SUCCESS,
@@ -210,7 +210,7 @@ export const createProduct = (id, naziv_proizvoda, opis_proizvoda, naziv_kategor
             error.response && error.response.data.message
                 ? error.response.data.message
                 : error.message
-        if (message === "Samo korisnik sa ulogom admina moze pristupiti ovom resursu" || message == "Morate biti ulogovani da bi ste pristupili ovom resursu!" || "Neispravan token! Pokusajte ponovo!") {
+        if (message === "Only admin can access" || message === "Log in to see resource" || "Invalid token! try again!") {
             setTimeout(function () {
                 dispatch(logout())
             }, 1500)
@@ -219,11 +219,11 @@ export const createProduct = (id, naziv_proizvoda, opis_proizvoda, naziv_kategor
             type: PRODUCT_CREATE_FAIL,
             payload: message,
         })
-    }*/
+    }
 }
 
-export const updateProduct = (id, naziv_proizvoda, opis_proizvoda = "", naziv_kategorije = "", kolicina = "", cena = "") => async (dispatch, getState) => {
-    /*try {
+export const updateProduct = (id, productName, description = "", size = "", price = "", categoryName = "", quantity = "") => async (dispatch, getState) => {
+    try {
         dispatch({
             type: PRODUCT_UPDATE_REQUEST,
         })
@@ -232,7 +232,7 @@ export const updateProduct = (id, naziv_proizvoda, opis_proizvoda = "", naziv_ka
         } = getState()
         let token;
         if (userInfo) {
-            token = userInfo.korisnik.token
+            token = userInfo.customer.token
         }
         else { token = "" }
         const config = {
@@ -240,11 +240,11 @@ export const updateProduct = (id, naziv_proizvoda, opis_proizvoda = "", naziv_ka
                 Authorization: `Bearer ${token}`,
             },
         }
-        console.log(naziv_kategorije)
+        console.log(categoryName)
 
         const { data } = await axios.put(
             `/api/products/admin/${id}`,
-            { id, naziv_proizvoda, opis_proizvoda, naziv_kategorije, kolicina, cena },
+            { id, productName, description, size, price, categoryName, quantity },
             config
         )
 
@@ -258,7 +258,7 @@ export const updateProduct = (id, naziv_proizvoda, opis_proizvoda = "", naziv_ka
             error.response && error.response.data.message
                 ? error.response.data.message
                 : error.message
-        if (message === "Samo korisnik sa ulogom admina moze pristupiti ovom resursu" || message == "Morate biti ulogovani da bi ste pristupili ovom resursu!" || "Neispravan token! Pokusajte ponovo!") {
+        if (message === "Only admin can access" || message === "Log in to see resource" || "Invalid token! try again!") {
             setTimeout(function () {
                 dispatch(logout())
             }, 1500)
@@ -267,5 +267,5 @@ export const updateProduct = (id, naziv_proizvoda, opis_proizvoda = "", naziv_ka
             type: PRODUCT_CREATE_FAIL,
             payload: message,
         })
-    }*/
+    }
 }

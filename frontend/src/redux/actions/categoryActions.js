@@ -11,6 +11,8 @@ import {
     DELETE_CATEGORY_FAIL
 } from '../constants/categoryConstants'
 
+import { logout } from './customerActions'
+
 export const getCategories = () => async (
     dispatch
 ) => {
@@ -36,7 +38,7 @@ export const getCategories = () => async (
 }
 
 export const createCategory = (categoryName) => async (dispatch, getState) => {
-    /*try {
+    try {
         dispatch({
             type: CREATE_CATEGORY_REQUEST,
         })
@@ -46,7 +48,7 @@ export const createCategory = (categoryName) => async (dispatch, getState) => {
         } = getState()
         let token;
         if (userInfo) {
-            token = userInfo.korisnik.token
+            token = userInfo.customer.token
         }
         else { token = "" }
         const config = {
@@ -55,7 +57,7 @@ export const createCategory = (categoryName) => async (dispatch, getState) => {
             },
         }
 
-        const { data } = await axios.post(`/api/categories/`, { naziv_kategorije }, config)
+        const { data } = await axios.post(`/api/categories/`, { categoryName }, config)
 
         dispatch({
             type: CREATE_CATEGORY_SUCCESS,
@@ -66,7 +68,7 @@ export const createCategory = (categoryName) => async (dispatch, getState) => {
             error.response && error.response.data.message
                 ? error.response.data.message
                 : error.message
-        if (message === "Samo korisnik sa ulogom admina moze pristupiti ovom resursu" || message == "Morate biti ulogovani da bi ste pristupili ovom resursu!" || "Neispravan token! Pokusajte ponovo!") {
+        if (message === "Only admin can access" || message === "Log in to see resoruce" || "Invalid token! try again!") {
             setTimeout(function () {
                 dispatch(logout())
             }, 1500)
@@ -75,11 +77,11 @@ export const createCategory = (categoryName) => async (dispatch, getState) => {
             type: CREATE_CATEGORY_FAIL,
             payload: message,
         })
-    }*/
+    }
 }
 
-export const deleteCategory = (name) => async (dispatch, getState) => {
-    /*try {
+export const deleteCategory = (categoryName) => async (dispatch, getState) => {
+    try {
         dispatch({
             type: DELETE_CATEGORY_REQUEST,
         })
@@ -88,7 +90,7 @@ export const deleteCategory = (name) => async (dispatch, getState) => {
         } = getState()
         let token;
         if (userInfo) {
-            token = userInfo.korisnik.token
+            token = userInfo.customer.token
         }
         else { token = "" }
         const config = {
@@ -96,7 +98,7 @@ export const deleteCategory = (name) => async (dispatch, getState) => {
                 Authorization: `Bearer ${token}`,
             },
         }
-        await axios.delete(`/api/categories/${naziv}`, config)
+        await axios.delete(`/api/categories/${categoryName}`, config)
 
         dispatch({ type: DELETE_CATEGORY_SUCCESS })
     } catch (error) {
@@ -104,7 +106,7 @@ export const deleteCategory = (name) => async (dispatch, getState) => {
             error.response && error.response.data.message
                 ? error.response.data.message
                 : error.message
-        if (message === "Samo korisnik sa ulogom admina moze pristupiti ovom resursu" || message == "Morate biti ulogovani da bi ste pristupili ovom resursu!" || "Neispravan token! Pokusajte ponovo!") {
+        if (message === "Only admin can access" || message === "Log in to see customers" || "Invalid token! try again!") {
             setTimeout(function () {
                 //dispatch(logout())
             }, 1500)
@@ -113,5 +115,5 @@ export const deleteCategory = (name) => async (dispatch, getState) => {
             type: DELETE_CATEGORY_FAIL,
             payload: message,
         })
-    }*/
+    }
 }

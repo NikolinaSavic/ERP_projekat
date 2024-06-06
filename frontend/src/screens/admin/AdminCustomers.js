@@ -1,27 +1,30 @@
 import { Row, Col, Table, Button } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
-import { Link } from "react-router-dom";
 import AdminLinksComponent from "../../components/admin/AdminLinksComponent";
 import { useState, useEffect } from "react";
-import { getUsers } from "../../redux/actions/customerActions";
+import { getUsers, deleteUser } from "../../redux/actions/customerActions";
 import { useDispatch, useSelector } from 'react-redux'
+import { USER_DETAILS_RESET } from "../../redux/constants/customerConstants";
 
 
 const AdminCustomers = () => {
 
     const usersList = useSelector((state) => state.users)
     const { loading, error, users } = usersList
+    const userDelete = useSelector((state) => state.userDelete)
+    const { success: successDelete } = userDelete
     const dispatch = useDispatch();
 
     const deleteHandler = async (id) => {
         if (window.confirm("Are you sure?")) {
-            //ide ono dispatch
+            dispatch(deleteUser(id))
         }
     }
 
     useEffect(() => {
         dispatch(getUsers())
-    }, [dispatch])
+        dispatch({ type: USER_DETAILS_RESET })
+    }, [dispatch, successDelete])
 
     return (
         <Row className="m-5">

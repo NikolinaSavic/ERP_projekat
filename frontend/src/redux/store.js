@@ -2,28 +2,39 @@ import { createStore, combineReducers, applyMiddleware } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import thunk from "redux-thunk";
 
-import { categoryListReducer } from './reducers/categoryReducers'
+import { categoryListReducer, categoryCreateReducer, categoryDeleteReducer } from './reducers/categoryReducers'
 import {
     productDetailsReducer,
     productListReducer,
-    productListBySearchQueryReducer
+    productListBySearchQueryReducer,
+    productListForAdminReducer,
+    productDeleteReducer,
+    productCreateReducer,
+    productUpdateReducer
 } from './reducers/productReducers'
 import { cartReducer } from './reducers/cartReducers'
-import { userLoginReducer, userRegisterReducer, userListReducer, userDetailsForAdminReducer, userUpdateByAdminReducer } from "./reducers/customerReducers";
+import { userLoginReducer, userRegisterReducer, userListReducer, userDetailsForAdminReducer, userUpdateByAdminReducer, userDeleteReducer, userUpdateProfileReducer } from "./reducers/customerReducers";
 
 
 const reducer = combineReducers({
     categories: categoryListReducer,
+    categoryCreate: categoryCreateReducer,
+    categoryDelete: categoryCreateReducer,
     productList: productListReducer,
     productListBySearchQueryReducer: productListBySearchQueryReducer,
     product: productDetailsReducer,
+    productListForAdmin: productListForAdminReducer,
+    productDelete: productDeleteReducer,
+    productCreate: productCreateReducer,
+    productUpdate: productUpdateReducer,
     cart: cartReducer,
     userLogin: userLoginReducer,
     userRegister: userRegisterReducer,
     users: userListReducer,
     userUpdate: userUpdateByAdminReducer,
     userDetailsForAdmin: userDetailsForAdminReducer,
-
+    userDelete: userDeleteReducer,
+    userUpdateProfile: userUpdateProfileReducer,
 })
 
 
