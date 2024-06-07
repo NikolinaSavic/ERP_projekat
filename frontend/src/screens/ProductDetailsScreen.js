@@ -14,7 +14,10 @@ import { addToCart } from "../redux/actions/cartActions";
 const ProductDetailsScreen = () => {
 
     const { id } = useParams();
-    const [quantity, setQuantity] = useState(1);
+    const [quantity_, setQuantity] = useState(1);
+    const userLogin = useSelector((state) => state.userLogin);
+    const [showCartMessage, setShowCartMessage] = useState(false);
+    const { loadingUserInfo, erroruserInfo, userInfo } = userLogin;
 
     const { loading, error, product } = useSelector(state => state.product);
     //const { reviews } = useSelector(state => state.reviews);
@@ -24,7 +27,8 @@ const ProductDetailsScreen = () => {
     const dispatch = useDispatch()
 
     const addToCartHandler = () => {
-        dispatch(addToCart(id, quantity));
+        dispatch(addToCart(id, quantity_));
+        setShowCartMessage(true);
     };
 
 
@@ -36,27 +40,21 @@ const ProductDetailsScreen = () => {
     const submitHandler = (e) => {
         e.preventDefault()
         const form = e.currentTarget.elements;
-        const comment = form.comment.value;
-        const rating = form.rating.value;
+        //const comment = form.comment.value;
+        //const rating = form.rating.value;
     }
-
-    /*useEffect(() => {
-        if (product.images) {
-            var options = {
-                scale: 0.9,
-                offset: { vertical: 0, horizontal: 0 },
-            };
-    
-            product.images.map(
-                (image, id) =>
-                    new ImageZoom(document.getElementById(`imageId${id + 1}`), options)
-            );
-        }
-});*/
 
 
     return (
         <Container>
+            <Alert
+                show={showCartMessage}
+                variant="success"
+                onClose={() => setShowCartMessage(false)}
+                dismissible
+            >
+                <Alert.Heading>Product added to cart!</Alert.Heading>
+            </Alert>
             <Row className="mt-5">
                 {loading ? (
                     <h2>Product details loading...</h2>
@@ -90,14 +88,14 @@ const ProductDetailsScreen = () => {
                                     <ListGroup>
                                         <ListGroup.Item>Status: {product.quantity > 0 ? 'In stock' : 'Unavailable'}</ListGroup.Item>
                                         <ListGroup.Item>
-                                            Total: <span className="fw-bold">${product.price * quantity}</span>
+                                            Total: <span className="fw-bold">${product.price * quantity_}</span>
                                         </ListGroup.Item>
 
                                         {product.quantity > 0 && (
                                             <ListGroup.Item>
                                                 Quanity:
                                                 <Form.Select
-                                                    value={quantity}
+                                                    value={quantity_}
                                                     onChange={(e) => setQuantity(e.target.value)}
                                                     size="lg"
                                                     aria-label="Default select example"
