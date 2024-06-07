@@ -29,13 +29,12 @@ const ProductListScreen = () => {
     useEffect(() => {
         // Resetujemo pageNum na 1 i ostale parametre na početne vrednosti kada se promeni searchQuery
         setCurrentPage(1);
-        setPrice(5000); // Postavljamo početnu vrednost cene na 5000 (ili neku drugu početnu vrednost)
+        setPrice(5000);
         setSortOption(""); // Resetujemo sort opciju
     }, [searchQuery]);
 
     const setCurrentPageNum = (pageNum) => {
         setCurrentPage(pageNum);
-        console.log(pageNum);
     };
 
     return (

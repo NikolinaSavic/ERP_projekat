@@ -30,36 +30,31 @@ const getOrder = async (req, res, next) => {
 
 const createOrder = async (req, res, next) => {
     try {
-        const { totalPrice, quantity, paymentMethod, orderItems } = req.body;
-        if (!(totalPrice && quantity && paymentMethod && orderItems)) {
-            return res.status(400).send("All inputs are required!");
-        } else {
+        console.log(req.body)
+        const { orderItems, paymentMethod } = req.body;
+        if (!orderItems || !paymentMethod) {
+            return res.status(400).send("Payment method and order items are neccessery fields.");
+        }
+        else {
+            console.log(orderItems.length)
             for (let i = 0; i < orderItems.length; i++) {
                 id = orderItems[i].productId
                 const product = await Product.findById(id).select("quantity");
-                //console.log(orderItems[i].quantity + "->")
-                console.log(product.quantity + "-->")
                 if (orderItems[i].quantity > product.quantity) {
-                    return res.status(400).send("Number of items is not available now.")
-                } else if (product.quantity - orderItems[i].quantity < 0) {
-                    return res.status(400).send("Product out of stock!")
+                    return res.status(400).send("It's not possible to create order with that number of items");
                 }
-                product.quantity = product.quantity - orderItems[i].quantity
-                await product.save();
             }
-
             const order = await Order.create({
-                totalPrice: totalPrice,
-                quantity: quantity,
-                paymentMethod: paymentMethod,
                 orderItems: orderItems,
-                customerId: ObjectId(req.customer._id)
+                customerId: ObjectId(req.customer._id),
+                paymentMethod: paymentMethod
             })
 
-            return res.status(201).send(order)
+            return res.status(201).send(order);
         }
-    } catch (error) {
-        next(error)
+
+    } catch (err) {
+        next(err)
     }
 }
 
@@ -120,5 +115,22 @@ const deleteOrder = async (req, res, next) => {
     }
 }
 
+const updateOrderPrice = async (req, res, next, id, amount) => {
+    try {
+        console.log("ID", id)
+        const order = await Order.findById(id);
 
-module.exports = { getCustomerOrders, getOrder, createOrder, updateOrderToPaid, updateOrderToDelivered, deleteOrder, getOrdersAdmin }
+        if (!order) {
+            return res.status(404).send("Order not found")
+        } else {
+            order.totalPrice = order.totalPrice + amount;
+            await order.save();
+        }
+    } catch (err) {
+        next(err);
+    }
+
+}
+
+
+module.exports = { getCustomerOrders, getOrder, createOrder, updateOrderToPaid, updateOrderToDelivered, deleteOrder, getOrdersAdmin, updateOrderPrice }

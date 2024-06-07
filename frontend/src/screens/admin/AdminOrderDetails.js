@@ -86,9 +86,6 @@ const AdminOrderDetails = () => {
                                 <ListGroup.Item>
                                     Shipping: <span className="fw-vold">included</span>
                                 </ListGroup.Item>
-                                <ListGroup.Item>
-                                    Total price: <span className="fw-vold">{order.totalPrice} $</span>
-                                </ListGroup.Item>
                                 <div className="d-grid gap-2">
                                     <Button size="lg" variant="warning" type="button" disabled={status == "Delivered"} onClick={() =>
                                         markAsDelivered(order._id)}>

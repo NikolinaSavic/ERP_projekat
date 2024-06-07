@@ -13,8 +13,8 @@ import {
     productUpdateReducer
 } from './reducers/productReducers'
 import { cartReducer } from './reducers/cartReducers'
-import { userLoginReducer, userRegisterReducer, userListReducer, userDetailsForAdminReducer, userUpdateByAdminReducer, userDeleteReducer, userUpdateProfileReducer } from "./reducers/customerReducers";
-import { orderDeleteReducer, ordersListForAdminReducer, orderDetailsReducer } from './reducers/orderReducers'
+import { userLoginReducer, userRegisterReducer, userListReducer, userDetailsForAdminReducer, userUpdateByAdminReducer, userDeleteReducer, userUpdateProfileReducer, userDetailsReducer } from "./reducers/customerReducers";
+import { orderDeleteReducer, ordersListForAdminReducer, orderDetailsReducer, orderCreateReducer, myOrdersList } from './reducers/orderReducers'
 
 
 const reducer = combineReducers({
@@ -36,9 +36,12 @@ const reducer = combineReducers({
     userDetailsForAdmin: userDetailsForAdminReducer,
     userDelete: userDeleteReducer,
     userUpdateProfile: userUpdateProfileReducer,
+    userDetails: userDetailsReducer,
     ordersList: ordersListForAdminReducer,
     orderDelete: orderDeleteReducer,
     orderDetails: orderDetailsReducer,
+    createOrder: orderCreateReducer,
+    myOrders: myOrdersList
 })
 
 
@@ -51,11 +54,20 @@ const userInfoFromStorage = localStorage.getItem('userInfo')
     ? JSON.parse(localStorage.getItem('userInfo'))
     : null
 
+const paymentMethodFromStorage = localStorage.getItem('paymentMethod')
+    ? JSON.parse(localStorage.getItem('paymentMethod'))
+    : []
+
+const shippingAddressFromStorage = localStorage.getItem('shippingAddress')
+    ? JSON.parse(localStorage.getItem('shippingAddress'))
+    : {}
 
 
 const initialState = {
     cart: {
         cartItems: cartItemsFromStorage,
+        paymentMethod: paymentMethodFromStorage,
+        shippingAddress: shippingAddressFromStorage
     },
     userLogin: { userInfo: userInfoFromStorage },
 }

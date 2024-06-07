@@ -5,20 +5,16 @@ const Product = require("./productModel");
 const orderSchema = mongoose.Schema({
     totalPrice: {
         type: Number,
-        required: true,
     },
     quantity: {
         type: Number,
-        required: true,
     },
     status: {
         type: String,
-        required: true,
         default: "Not delivered"
     },
     isPaid: {
         type: Boolean,
-        required: true,
         default: false,
     },
     paymentMethod: {

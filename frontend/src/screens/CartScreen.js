@@ -33,7 +33,7 @@ const CartScreen = () => {
                     <Col md={8}>
                         <ListGroup variant="flush">
                             {cartItems.map((item, idx) => (
-                                <CartItemComponent key={idx} item={item} changeCount={changeCount} removeFromCartHandler={removeFromCartHandler} />
+                                <CartItemComponent key={idx} item={item} removeFromCartHandler={removeFromCartHandler} />
                             ))}
                         </ListGroup>
                     </Col>
@@ -53,7 +53,7 @@ const CartScreen = () => {
                                     </LinkContainer>
                                 </ListGroup.Item></>) : (<>
                                     <ListGroup.Item>
-                                        <LinkContainer to="/user/cart-details">
+                                        <LinkContainer to="/customer/cart-details">
                                             <Button type="button">Proceed to checkout</Button>
                                         </LinkContainer>
                                     </ListGroup.Item></>)}

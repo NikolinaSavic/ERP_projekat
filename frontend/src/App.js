@@ -18,6 +18,8 @@ import AdminEditProduct from './screens/admin/AdminEditProduct';
 import AdminOrderDetails from './screens/admin/AdminOrderDetails';
 import AdminOrders from './screens/admin/AdminOrders';
 import AdminProducts from './screens/admin/AdminProducts';
+import OrderSuccessPage from './screens/customer/OrderSuccessPage';
+import ShippingAndPayScreen from './screens/customer/ShippingAndPayScreen';
 
 const App = () => {
   return (
@@ -39,6 +41,8 @@ const App = () => {
         <Route path="/customer/my-orders" element={<CustomerOrders />} />
         <Route path="/customer/order-details/:id" element={<CustomerOrderDetails />} />
         <Route path="/customer/cart-details" element={<CustomerCartDetails />} />
+        <Route path="/shipping" element={<ShippingAndPayScreen />} />
+        <Route path="/order-success" element={<OrderSuccessPage />} />
 
         <Route path="/admin/customers" element={<AdminCustomers />} />
         <Route path="/admin/edit-customer" element={<AdminEditCustomer />} />

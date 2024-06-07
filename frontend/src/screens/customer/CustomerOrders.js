@@ -1,41 +1,58 @@
 import { Row, Col, Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux'
+import React, { useEffect } from 'react'
+import { getMyOrders } from "../../redux/actions/orderActions";
+import moment from "moment";
 
 const CustomerOrders = () => {
+
+    const myOrders = useSelector((state) => state.myOrders);
+    const { loading, error, orders } = myOrders;
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(getMyOrders())
+    }, [dispatch])
+
+
     return (
         <Row className="m-5">
-            <Col md={12}>
-                <h1>My orders</h1>
-                <Table striped bordered hover>
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>User</th>
-                            <th>Date</th>
-                            <th>Total</th>
-                            <th>Delivered</th>
-                            <th>Order details</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {["bi bi-check-lg text-success", "bi bi-x-lg text-danger"].map((item, idx) => (
-                            <tr key={idx}>
-                                <td>{idx + 1}</td>
-                                <td>Nina</td>
-                                <td>11.2.2023.</td>
-                                <td>120rsd</td>
-                                <td>
-                                    <i className={item}></i>
-                                </td>
-                                <td>
-                                    <Link to="/customer/order-details">Go to order</Link>
-                                </td>
-                            </tr>
-                        ))}
+            {loading ? (
+                <h2>Loading orders...</h2>
+            ) : error ? (
+                <h2>{error}</h2>
+            ) : (
+                <>
+                    <Col md={12}>
+                        <h1>My orders</h1>
+                        <Table striped bordered hover>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                    <th>Order details</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {orders.map((order, idx) => (
+                                    <tr key={idx}>
+                                        <td>{idx + 1}</td>
+                                        <td>{order.status}</td>
+                                        <td>{moment(order.orderDate).format('YYYY-MM-DD')}</td>
+                                        <td>
+                                            <Link to={`/customer/order-details/${order._id}`}>Details</Link>
+                                        </td>
+                                    </tr>
+                                )
+                                )}
 
-                    </tbody>
-                </Table>
-            </Col>
+                            </tbody>
+                        </Table>
+                    </Col>
+                </>
+            )}
         </Row >
     )
 }

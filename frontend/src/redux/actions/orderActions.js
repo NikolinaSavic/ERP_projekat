@@ -9,6 +9,12 @@ import {
     ORDER_DETAILS_FAIL,
     ORDER_DETAILS_SUCCESS,
     ORDER_DETAILS_REQUEST,
+    ORDER_CREATE_FAIL,
+    ORDER_CREATE_SUCCESS,
+    ORDER_CREATE_REQUEST,
+    MY_ORDERS_REQUEST,
+    MY_ORDERS_SUCCESS,
+    MY_ORDERS_FAIL,
 } from '../constants/orderConstants'
 import { logout } from './customerActions'
 
@@ -136,6 +142,98 @@ export const getOrderDetails = (id) => async (dispatch, getState) => {
         }
         dispatch({
             type: ORDER_DETAILS_FAIL,
+            payload: message,
+        })
+    }
+}
+
+export const createOrder = (orderItems, paymentMethod) => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: ORDER_CREATE_REQUEST,
+        })
+        const {
+            userLogin: { userInfo },
+        } = getState()
+        let token;
+        if (userInfo) {
+            token = userInfo.customer.token
+        }
+        else { token = "" }
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }
+        const order = { orderItems }
+        console.log(orderItems)
+        const { data } = await axios.post(`/api/orders`, { orderItems, paymentMethod }, config)
+
+        dispatch({
+            type: ORDER_CREATE_SUCCESS,
+            payload: data,
+        })
+        console.log(order)
+    } catch (error) {
+        const message =
+            error.response && error.response.data.message
+                ? error.response.data.message
+                : error.message
+        if (message === "Only admin can access" || message === "Log in to see resource" || "Invalid token! try again!") {
+            setTimeout(function () {
+                //dispatch(logout())
+            }, 1500)
+
+        }
+        dispatch({
+            type: ORDER_CREATE_FAIL,
+            payload: message,
+        })
+    }
+}
+
+export const getMyOrders = () => async (
+    dispatch, getState
+) => {
+    try {
+
+        const {
+            userLogin: { userInfo },
+        } = getState()
+        let token;
+        if (userInfo) {
+            token = userInfo.customer.token
+        }
+        else { token = "" }
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }
+        dispatch({ type: MY_ORDERS_REQUEST })
+        const { data } = await axios.get(
+            `/api/orders/`,
+            config
+        )
+
+        dispatch({
+            type: MY_ORDERS_SUCCESS,
+            payload: data,
+        })
+
+    } catch (error) {
+        const message =
+            error.response && error.response.data.message
+                ? error.response.data.message
+                : error.message
+        if (message === "Only admin can access" || message === "Log in to see resource" || "Invalid token! try again!") {
+            setTimeout(function () {
+                dispatch(logout())
+            }, 1500)
+
+        }
+        dispatch({
+            type: MY_ORDERS_FAIL,
             payload: message,
         })
     }

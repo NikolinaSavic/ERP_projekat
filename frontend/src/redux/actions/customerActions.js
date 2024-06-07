@@ -22,6 +22,9 @@ import {
     USER_UPDATE_PROFILE_FAIL,
     USER_UPDATE_PROFILE_REQUEST,
     USER_UPDATE_PROFILE_SUCCESS,
+    USER_DETAILS_REQUEST,
+    USER_DETAILS_SUCCESS,
+    USER_DETAILS_FAIL
 } from "../constants/customerConstants";
 
 export const login = (email, password) => async (dispatch) => {
@@ -55,7 +58,7 @@ export const login = (email, password) => async (dispatch) => {
 
 export const logout = () => (dispatch) => {
     localStorage.removeItem('userInfo')
-    //localStorage.removeItem('cartItems')
+    localStorage.removeItem('cartItems')
     dispatch({ type: USER_LOGOUT })
     document.location.href = '/login'
 }
@@ -330,3 +333,52 @@ export const updateUserProfile = (id, firstName, lastName, password, phone, addr
         })
     }
 }
+
+
+export const getUserDetails = () => async (dispatch, getState) => {
+    try {
+        dispatch({ type: USER_DETAILS_REQUEST });
+
+        const { userLogin: { userInfo } } = getState();
+
+        if (!userInfo || !userInfo.customer) {
+            throw new Error("User is not logged in");
+        }
+
+        const token = userInfo.customer.token;
+        const id = userInfo.customer._id;
+
+        //console.log('User ID:', id);
+        //console.log('Token:', token);
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        };
+
+        const { data } = await axios.get(`/api/customers/profile/${id}`, config);
+
+        dispatch({
+            type: USER_DETAILS_SUCCESS,
+            payload: data,
+        });
+    } catch (error) {
+        const message = error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message;
+
+        console.error('Error message:', message);
+
+        if (message === "Only admin access" || message === "You must log in to access!" || message === "Token invalid! Try again!") {
+            setTimeout(() => {
+                //dispatch(logout())
+            }, 1500);
+        }
+
+        dispatch({
+            type: USER_DETAILS_FAIL,
+            payload: message,
+        });
+    }
+};

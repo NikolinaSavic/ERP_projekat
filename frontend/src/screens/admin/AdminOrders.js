@@ -45,7 +45,6 @@ const AdminOrders = () => {
                                     <th>#</th>
                                     <th>Customer</th>
                                     <th>Date</th>
-                                    <th>Total</th>
                                     <th>Delivered</th>
                                     <th>Payment method</th>
                                     <th>Order details</th>
@@ -57,7 +56,6 @@ const AdminOrders = () => {
                                         <td>{idx + 1}</td>
                                         <td>{order.customerId.firstName + " " + order.customerId.lastName}</td>
                                         <td>{moment(order.orderDate).utc().format('DD-MM-YYYY')}</td>
-                                        <td>{order.totalPrice} $</td>
                                         <td>
                                             {order.status === "Delivered" ? (
                                                 <i className="bi bi-check-lg text-success"></i>
