@@ -1,69 +1,106 @@
 import { Container, Row, Col, Form, Alert, ListGroup, Button, } from "react-bootstrap";
 import CartItemComponent from "../../components/CartItemComponent";
+import { useParams } from "react-router-dom";
+import { useState } from "react";
+import { useDispatch, useSelector } from 'react-redux'
+import { useEffect } from 'react';
+import { getOrderDetails } from "../../redux/actions/orderActions";
+import { markOrderAsDelivered } from "../../utils/utils";
 
 const AdminOrderDetails = () => {
+
+    const orderDetails = useSelector((state) => state.orderDetails)
+    const { loading, error, order } = orderDetails
+    const { status } = order
+    const [orderButtonMessage, setOrderButtonMessage] = useState(status == "Delivered" ? "Order delivered" : "Mark as delivered");
+    const [isDelivered, setIsDelivered] = useState(status);
+    const { id } = useParams();
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(getOrderDetails(id))
+    }, [dispatch, id, isDelivered])
+
+    const markAsDelivered = async (id) => {
+        setTimeout(function () {
+            dispatch(markOrderAsDelivered(id))
+            setIsDelivered(true)
+            setOrderButtonMessage("Order delivered")
+        }, 500)
+    };
+
+
     return (
         <Container fluid>
-            <Row className="mt-4">
-                <h1>Order details</h1>
-                <Col md={8}>
-                    <br />
-                    <Row>
-                        <Col md={6}>
-                            <h2>Shipping</h2>
-                            <b>Name</b>: Nina Savic <br />
-                            <b>Address</b>: NS <br />
-                            <b>Phone number</b>: 222
+            {loading ? (
+                <h2>Loading order details...</h2>
+            ) : error ? (
+                <h2>{error}</h2>
+            ) : (
+                <>
+                    <Row className="mt-4">
+                        <h1>Order details</h1>
+                        <Col md={8}>
+                            <br />
+                            <Row>
+                                <Col md={6}>
+                                    <h2>Shipping details</h2>
+                                    <b>Name</b>: {order.customerId.firstName + " " + order.customerId.lastName} <br />
+                                    <b>Address</b>: {order.customerId.address} <br />
+                                    <b>Phone number</b>: {order.customerId.phone}
+                                </Col>
+                                <Col>
+                                    <Alert className="mt-3" variant={order.isPaid ? "success" : "danger"}>
+                                        {order.isPaid ? <> Paid </> : <> Not paid </>}
+                                    </Alert>
+                                </Col>
+                                <Row>
+                                    <Col>
+                                        <Alert
+                                            className="mt-3"
+                                            variant={order.status == "Delivered" ? "success" : "danger"}
+                                        >
+                                            {order.status == "Delivered" ? (
+                                                <>Order delivered</>
+                                            ) : (
+                                                <>Order not delivered yet</>
+                                            )}
+                                        </Alert>
+                                    </Col>
+
+                                </Row>
+                            </Row>
+                            <br />
+                            <h2>Order items</h2>
+                            <ListGroup variant="flush">
+                                {order.orderItems.map((item, idx) => (
+                                    <CartItemComponent key={idx} item={item} orderCreated={true} />
+                                ))}
+                            </ListGroup>
                         </Col>
-                        <Col md={6}>
-                            <h2>Payment method</h2>
-                            <Form.Select disabled={true}>
-                                <option value="pp">Paypal</option>
-                                <option value="cod">
-                                    Cash on delivery
-                                </option>
-                            </Form.Select>
+                        <Col md={4}>
+                            <ListGroup>
+                                <ListGroup.Item>
+                                    <h3>Order summary</h3>
+                                </ListGroup.Item>
+                                <ListGroup.Item>
+                                    Shipping: <span className="fw-vold">included</span>
+                                </ListGroup.Item>
+                                <ListGroup.Item>
+                                    Total price: <span className="fw-vold">{order.totalPrice} $</span>
+                                </ListGroup.Item>
+                                <div className="d-grid gap-2">
+                                    <Button size="lg" variant="warning" type="button" disabled={status == "Delivered"} onClick={() =>
+                                        markAsDelivered(order._id)}>
+                                        {orderButtonMessage}
+                                    </Button>
+                                </div>
+                            </ListGroup>
+                            {console.log(order.status)}
                         </Col>
-                        <Row>
-                            <Col>
-                                <Alert className="mt-3" variant="danger">
-                                    Not delivered
-                                </Alert>
-                            </Col>
-                            <Col>
-                                <Alert className="mt-3" variant="success">
-                                    Paid on 2023
-                                </Alert>
-                            </Col>
-                        </Row>
                     </Row>
-                    <br />
-                    <h2>Order items</h2>
-                    <ListGroup variant="flush">
-                        {Array.from({ length: 3 }).map((item, idx) => (
-                            <CartItemComponent key={idx} item={item} />
-                        ))}
-                    </ListGroup>
-                </Col>
-                <Col md={4}>
-                    <ListGroup>
-                        <ListGroup.Item>
-                            <h3>Order summary</h3>
-                        </ListGroup.Item>
-                        <ListGroup.Item>
-                            Shipping: <span className="fw-vold">included</span>
-                        </ListGroup.Item>
-                        <ListGroup.Item>
-                            Total price: <span className="fw-vold">400 $</span>
-                        </ListGroup.Item>
-                        <div className="d-grid gap-2">
-                            <Button size="lg" variant="warning" type="button">
-                                Mark as delivered
-                            </Button>
-                        </div>
-                    </ListGroup>
-                </Col>
-            </Row>
+                </>
+            )}
         </Container>
     )
 }

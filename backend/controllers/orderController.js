@@ -83,7 +83,7 @@ const updateOrderToPaid = async (req, res, next) => {
 //admin
 const getOrdersAdmin = async (req, res, next) => {
     try {
-        const orders = await Order.find({}).sort({ orderDate: "desc" });
+        const orders = await Order.find({}).populate("customerId", "firstName lastName").sort({ orderDate: "desc" });
         return res.status(200).send(orders)
     } catch (error) {
         next(error)

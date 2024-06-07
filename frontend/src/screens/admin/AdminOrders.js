@@ -43,7 +43,7 @@ const AdminOrders = () => {
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    {/*<th>Customer</th>*/}
+                                    <th>Customer</th>
                                     <th>Date</th>
                                     <th>Total</th>
                                     <th>Delivered</th>
@@ -55,7 +55,7 @@ const AdminOrders = () => {
                                 {orders.map((order, idx) => (
                                     <tr key={idx}>
                                         <td>{idx + 1}</td>
-                                        {/*<td>{order.customerId.firstName + " " + order.customerId.lastName}</td>*/}
+                                        <td>{order.customerId.firstName + " " + order.customerId.lastName}</td>
                                         <td>{moment(order.orderDate).utc().format('DD-MM-YYYY')}</td>
                                         <td>{order.totalPrice} $</td>
                                         <td>

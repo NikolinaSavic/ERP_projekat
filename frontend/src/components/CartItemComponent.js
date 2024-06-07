@@ -1,29 +1,18 @@
 import { ListGroup, Row, Col, Image, Button, Form } from "react-bootstrap"
 
-const CartItemComponent = () => {
+const CartItemComponent = ({ item }) => {
     return (
         <>
             <ListGroup.Item>
                 <Row>
                     <Col md={2}>
-                        <Image crossOrigin="anonymous" src="/images/bag.jpg" fluid />
+                        {item.productName}
                     </Col>
                     <Col md={2}>
-                        product name
-                    </Col>
-                    <Col md={2}>
-                        <b>price sum</b>
+                        <b>{item.price}$</b>
                     </Col>
                     <Col md={3}>
-                        <Form.Select>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                        </Form.Select>
-                    </Col>
-                    <Col md={3}>
-                        <Button type="button" variant="secondary" onClick={() => window.confirm("Are you sure?")}>
-                            <i className="bi bi-trash">
-                            </i></Button>
+                        <b>{item.quantity} items</b>
                     </Col>
                 </Row>
             </ListGroup.Item>

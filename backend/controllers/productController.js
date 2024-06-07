@@ -143,10 +143,12 @@ const getProductsByCategory = async (req, res, next) => {
     try {
         const pageNum = Number(req.query.pageNum) || 1;
         const categoryName = req.params.category;
+        filter = { categoryName: { $eq: categoryName } }
         const products = await Product.find({})
             .skip(pageNum > 1 ? ((pageNum - 1) * recordsPerPage) : 0)
             .limit(recordsPerPage)
-            .populate({ path: "categoryId", select: "categoryName" });
+            .populate({ path: "categoryId", select: "categoryName", match: filter })
+            .then((product) => product.filter((product => product.categoryId != null)));;
         if (products.length === 0) {
             return res.status(404).send("There are no products for this category!");
         } else {
