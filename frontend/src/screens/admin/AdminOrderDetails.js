@@ -85,7 +85,7 @@ const AdminOrderDetails = () => {
                                     <h3>Order summary</h3>
                                 </ListGroup.Item>
                                 <ListGroup.Item>
-                                    Shipping: <span className="fw-vold">included</span>
+                                    Shipping: <span className="fw-vold">Free shipping</span>
                                 </ListGroup.Item>
                                 <div className="d-grid gap-2">
                                     <Button size="lg" variant="warning" type="button" disabled={status == "Delivered"} onClick={() =>

@@ -1,7 +1,6 @@
 import {
     Row, Col, Container, Image, ListGroup, Form,
     Button, Alert,
-    ListGroupItem,
 } from "react-bootstrap";
 import { Rating } from "react-simple-star-rating";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,9 +19,6 @@ const ProductDetailsScreen = () => {
     const { loadingUserInfo, erroruserInfo, userInfo } = userLogin;
 
     const { loading, error, product } = useSelector(state => state.product);
-    //const { reviews } = useSelector(state => state.reviews);
-    //const { errorReviews } = useSelector(state => state.createReview);
-    //const [productReviewed, setProductReviewed] = useState(false);
 
     const dispatch = useDispatch()
 
@@ -31,19 +27,9 @@ const ProductDetailsScreen = () => {
         setShowCartMessage(true);
     };
 
-
     useEffect(() => {
         dispatch(getProductDetails(id))
     }, [dispatch, id])
-
-
-    const submitHandler = (e) => {
-        e.preventDefault()
-        const form = e.currentTarget.elements;
-        //const comment = form.comment.value;
-        //const rating = form.rating.value;
-    }
-
 
     return (
         <Container>
@@ -117,42 +103,6 @@ const ProductDetailsScreen = () => {
                                     </ListGroup>
                                 </Col>
                             </Row>
-                            <Row>
-                                <Col className="mt-5">
-                                    <h4>Reviews</h4>
-                                    <ListGroupItem variant="flush">
-                                        {Array.from({ length: 3 }).map((item, idx) => (
-                                            <ListGroupItem key={idx}>
-                                                Customer name <br />
-                                                <Rating readonly size={20} /> <br />
-                                                Description of review
-                                            </ListGroupItem>
-                                        ))}
-                                    </ListGroupItem>
-                                </Col>
-                            </Row>
-                            <hr />
-                            send review form
-                            <Alert variant="warning">
-                                Login first to write a review
-                            </Alert>
-                            <Form>
-                                <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                                    <Form.Label>Write a review</Form.Label>
-                                    <Form.Control as="textarea" rows={3} />
-                                </Form.Group>
-                                <Form.Select aria-label="Default select example">
-                                    <option>Your rating</option>
-                                    <option value="5">5</option>
-                                    <option value="4">4</option>
-                                    <option value="3">3</option>
-                                    <option value="2">2</option>
-                                    <option value="1">1</option>
-                                </Form.Select>
-                                <Button type="submit" className="mb-3 mt-3" variant="primary">
-                                    Rate
-                                </Button>
-                            </Form>
                         </Col>
                     </>
                 )}

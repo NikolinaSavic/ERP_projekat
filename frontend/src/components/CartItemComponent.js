@@ -7,7 +7,7 @@ const CartItemComponent = ({ item, removeFromCartHandler = false, orderCreated =
             <ListGroup.Item>
                 <Row>
                     <Col md={2}>
-                        {item.productName}
+                        <b>{item.productName}</b>
                     </Col>
                     <Col md={2}>
                         <b>{item.price}$</b>
