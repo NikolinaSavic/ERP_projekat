@@ -15,6 +15,7 @@ import { createProduct } from "../../redux/actions/productActions";
 import { deleteCategory, getCategories } from "../../redux/actions/categoryActions";
 import { PRODUCT_CREATE_RESET } from "../../redux/constants/productConstants";
 import { useNavigate } from "react-router-dom";
+import { uploadImages } from "../../utils/utils"
 
 
 const AdminCreateProduct = () => {
@@ -23,6 +24,8 @@ const AdminCreateProduct = () => {
     const { categories } = useSelector((state) => state.categories);
     const { error: errorCreate, success } = useSelector((state) => state.categoryCreate);
     const { success: successDelete } = useSelector((state) => state.categoryDelete);
+
+    const [images, setImages] = useState(false);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -52,6 +55,9 @@ const AdminCreateProduct = () => {
             if (!error) {
                 console.log(id)
                 setTimeout(function () {
+                    dispatch(uploadImages(images, id))
+                }, 500)
+                setTimeout(function () {
                     navigate("/admin/products");
                 }, 300)
 
@@ -64,6 +70,10 @@ const AdminCreateProduct = () => {
         let element = document.getElementById("cats");
         dispatch(deleteCategory(element.value));
         element.value = ""
+    };
+
+    const uploadHandler = (images) => {
+        setImages(images);
     };
 
     return (
@@ -134,7 +144,7 @@ const AdminCreateProduct = () => {
                         <Form.Group controlId="formFileMultiple" className="mb-3 mt-3">
                             <Form.Label>Images</Form.Label>
                             <Form.Control
-
+                                onChange={(e) => uploadHandler(e.target.files)}
                                 type="file"
                                 multiple
                             />

@@ -15,6 +15,9 @@ import {
     MY_ORDERS_REQUEST,
     MY_ORDERS_SUCCESS,
     MY_ORDERS_FAIL,
+    ORDER_UPDATE_REQUEST,
+    ORDER_UPDATE_SUCCESS,
+    ORDER_UPDATE_FAIL
 } from '../constants/orderConstants'
 import { logout } from './customerActions'
 
@@ -234,6 +237,46 @@ export const getMyOrders = () => async (
         }
         dispatch({
             type: MY_ORDERS_FAIL,
+            payload: message,
+        })
+    }
+}
+
+
+export const updateOrder = (id) => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: ORDER_UPDATE_REQUEST,
+        })
+        const {
+            userLogin: { userInfo },
+        } = getState()
+        let token;
+        if (userInfo) {
+            token = userInfo.customer.token
+        }
+        else { token = "" }
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }
+
+        const { data } = await axios.put(`/api/orders/paid/${id}`, { isPaid: true }, config);
+
+        dispatch({ type: ORDER_UPDATE_SUCCESS })
+    } catch (error) {
+        const message =
+            error.response && error.response.data.message
+                ? error.response.data.message
+                : error.message
+        if (message === "Only admin can access" || message === "Log in to see resource" || "Invalid token! try again!") {
+            setTimeout(function () {
+                dispatch(logout())
+            }, 1500)
+        }
+        dispatch({
+            type: ORDER_UPDATE_FAIL,
             payload: message,
         })
     }

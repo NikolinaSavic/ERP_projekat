@@ -2,14 +2,21 @@ import React, { useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { CART_CLEAR_ITEMS } from '../../redux/constants/cartConstants';
+import { updateOrder } from '../../redux/actions/orderActions';
+import { useParams } from 'react-router-dom';
 
 const OrderSuccessPage = () => {
+
+    const { orderId } = useParams();
 
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch({ type: CART_CLEAR_ITEMS })
-    }, [dispatch]);
+        if (orderId) {
+            dispatch(updateOrder(orderId));
+        }
+    }, [dispatch, orderId]);
 
 
     return (

@@ -52,6 +52,7 @@ const AdminOrderDetails = () => {
                                 <Col>
                                     <Alert className="mt-3" variant={order.isPaid ? "success" : "danger"}>
                                         {order.isPaid ? <> Paid </> : <> Not paid </>}
+                                        {console.log(order.isPaid)}
                                     </Alert>
                                 </Col>
                                 <Row>
@@ -93,7 +94,7 @@ const AdminOrderDetails = () => {
                                     </Button>
                                 </div>
                             </ListGroup>
-                            {console.log(order.status)}
+                            {console.log(order.isPaid)}
                         </Col>
                     </Row>
                 </>

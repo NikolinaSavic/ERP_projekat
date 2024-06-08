@@ -1,13 +1,14 @@
 import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
 import React, { useState, useEffect } from 'react'
-import { updateUserProfile, getUserDetailsForAdmin } from '../../redux/actions/customerActions'
+import { updateUserProfile, getUserDetails } from '../../redux/actions/customerActions'
 import { useDispatch, useSelector } from 'react-redux'
 
 
 const CustomerProfile = () => {
 
+    const userDetails = useSelector((state) => state.userDetails);
+    const { loading, error, user } = userDetails;
     const [passwordsMatchState, setPasswordsMatchState] = useState(true);
-    const { loading, error, user, isAdmin } = useSelector(state => state.userDetailsForAdmin);
 
     const userUpdateProfile = useSelector((state) => state.userUpdateProfile)
     const { success } = userUpdateProfile
@@ -19,6 +20,14 @@ const CustomerProfile = () => {
     const userLogin = useSelector((state) => state.userLogin)
     const { userInfo } = userLogin
 
+    useEffect(() => {
+
+        if (!user || !user.firstName)
+            dispatch(getUserDetails())
+        setUserUpdated(false)
+
+
+    }, [dispatch, userInfo, user, userUpdated])
 
     const onChange = () => {
         const password = document.querySelector("input[name=password]")

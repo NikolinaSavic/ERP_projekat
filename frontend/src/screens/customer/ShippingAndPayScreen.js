@@ -36,6 +36,11 @@ const ShippingAndPayScreen = ({ history }) => {
             .then((response) => {
                 if (response.data.url) {
                     window.location.assign(response.data.url)
+                    if (order && order._id) {
+                        history.push(`/order-success/${order._id}`);
+                    } else {
+                        console.error('Order ID is missing');
+                    }
                 }
             })
             .catch((err) => console.log(err.message));

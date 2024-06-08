@@ -42,7 +42,7 @@ const App = () => {
         <Route path="/customer/order-details/:id" element={<CustomerOrderDetails />} />
         <Route path="/customer/cart-details" element={<CustomerCartDetails />} />
         <Route path="/shipping" element={<ShippingAndPayScreen />} />
-        <Route path="/order-success" element={<OrderSuccessPage />} />
+        <Route path="/order-success/:orderId" element={<OrderSuccessPage />} />
 
         <Route path="/admin/customers" element={<AdminCustomers />} />
         <Route path="/admin/edit-customer" element={<AdminEditCustomer />} />

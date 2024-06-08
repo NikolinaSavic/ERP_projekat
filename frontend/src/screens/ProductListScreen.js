@@ -88,7 +88,7 @@ const ProductListScreen = () => {
                                 )}
                                 <Pagination
                                     activePage={pageNum}
-                                    itemsCountPerPage={2}
+                                    itemsCountPerPage={1}
                                     totalItemsCount={totalProducts}
                                     onChange={setCurrentPageNum}
                                     itemClass="page-item"

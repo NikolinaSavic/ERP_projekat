@@ -50,6 +50,15 @@ const createOrder = async (req, res, next) => {
                 paymentMethod: paymentMethod
             })
 
+            // Smanjivanje kolicine proizvoda
+            for (let i = 0; i < orderItems.length; i++) {
+                const productId = orderItems[i].productId;
+                const product = await Product.findById(productId);
+
+                product.quantity -= orderItems[i].quantity;
+                await product.save();
+            }
+
             return res.status(201).send(order);
         }
 
@@ -60,20 +69,24 @@ const createOrder = async (req, res, next) => {
 
 const updateOrderToPaid = async (req, res, next) => {
     try {
-        const order = await Order.findById(req.params.id);
+        const id = req.params.id;
+        const order = await Order.findById(id);
         if (!order) {
-            return res.status(404).send("Order not found!")
+            console.log("Order not found");
+            return res.status(404).send("Order not found!");
         } else {
             order.isPaid = true;
-            console.log(order.isPaid)
-            order.orderDate = Date.now()
-            await order.save()
-            return res.status(200).send("Order successfully updated to paid!")
+            order.orderDate = Date.now();
+            await order.save();
+            console.log("Order updated to paid:", order);
+            return res.status(200).send("Order successfully updated to paid!");
         }
     } catch (error) {
-        next(error)
+        console.error("Error updating order to paid:", error);
+        next(error);
     }
-}
+};
+
 
 //admin
 const getOrdersAdmin = async (req, res, next) => {

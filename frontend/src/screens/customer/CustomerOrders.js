@@ -32,7 +32,7 @@ const CustomerOrders = () => {
                                     <th>#</th>
                                     <th>Status</th>
                                     <th>Date</th>
-                                    <th>Order details</th>
+                                    <th>Is paid</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -42,7 +42,11 @@ const CustomerOrders = () => {
                                         <td>{order.status}</td>
                                         <td>{moment(order.orderDate).format('YYYY-MM-DD')}</td>
                                         <td>
-                                            <Link to={`/customer/order-details/${order._id}`}>Details</Link>
+                                            {order.isPaid ? (
+                                                <i className="bi bi-check-lg text-success"></i>
+                                            ) : (
+                                                <i className="bi bi-x-lg text-danger"></i>
+                                            )}
                                         </td>
                                     </tr>
                                 )

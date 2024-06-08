@@ -9,7 +9,7 @@ import {
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux'
-import { updateProduct } from "../../redux/actions/productActions";
+import { updateProduct, getProductDetails } from "../../redux/actions/productActions";
 import { getCategories, deleteCategory } from "../../redux/actions/categoryActions";
 
 
@@ -24,6 +24,7 @@ const AdminEditProduct = () => {
     const { success } = productUpdate
 
     useEffect(() => {
+        dispatch(getProductDetails(id))
         dispatch(getCategories())
         setDeleted(false)
     }, [dispatch, id, deleted, success])

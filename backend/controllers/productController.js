@@ -171,33 +171,40 @@ const getProductsByAdmin = async (req, res, next) => {
 
 const adminUpload = async (req, res, next) => {
     try {
-        if (!req.files || !!req.files.images === false) {
-            return res.status(400).send("No files were uploaded.")
+        if (!req.files || !req.files.images) {
+            console.log('No files uploaded.');
+            return res.status(400).send("No files were uploaded.");
         }
 
-        const validateResult = imageValidate(req.files.images)
+        const validateResult = imageValidate(req.files.images);
         if (validateResult.error) {
-            return res.status(400).send(validateResult.error)
+            console.log('Validation error:', validateResult.error);
+            return res.status(400).send(validateResult.error);
         }
 
-        const path = require("path")
-        const { v4: uuidv4 } = require("uuid") //random name za fajlove
+        let product = await Product.findById(req.query.id).orFail();
 
-        let imagesToUpload = []
+        let imagesToUpload = [];
         if (Array.isArray(req.files.images)) {
-            imagesToUpload = req.files.images
+            imagesToUpload = req.files.images;
         } else {
-            imagesToUpload.push(req.files.images)
+            imagesToUpload.push(req.files.images);
         }
 
         for (let image of imagesToUpload) {
-            console.log(path.extname(image.name))
+            product.images.push({ url: image.name }); // Koristi samo ime fajla kao URL
         }
 
+        await product.save();
+
+        res.status(200).send({ message: 'Images uploaded successfully.' });
+
     } catch (error) {
-        next(error)
+        console.log('Error in adminUpload:', error);
+        next(error);
     }
-}
+};
+
 
 
 

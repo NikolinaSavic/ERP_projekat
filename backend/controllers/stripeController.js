@@ -76,8 +76,8 @@ const createCheckoutSession = async (req, res) => {
             order_id: req.body.order_id,
         },
         mode: 'payment',
-        success_url: 'http://localhost:3000/order-success',
-        cancel_url: req.body.fromOrderPage ? `http://localhost:3000/customer/order-details/${req.body.order_id}` : 'http://localhost:3000/cart-details',
+        success_url: `http://localhost:3000/order-success/${req.body.order_id}`,
+        cancel_url: req.body.fromOrderPage ? `http://localhost:3000/customer/order-details/${req.body.order_id}` : 'http://localhost:3000/shipping',
     })
 
     res.send({ url: session.url })
